@@ -31,8 +31,7 @@ export async function register(req: Request, res: Response) {
       email,
       password,
       confirmPassword,
-    });
-
+    }, { abortEarly: false }); // show all validation errors at once
     res.status(200).json({
       message: "Resgistrattion Successfully",
       data: {
@@ -45,7 +44,7 @@ export async function register(req: Request, res: Response) {
     if (error instanceof Yup.ValidationError) {
       res.status(400).json({
         messsage: 'Validation Error',
-        errors: error.errors
+        errors: error.errors // return all validation errors
       })
     } else {
       res.status(500).json({
