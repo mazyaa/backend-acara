@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { UsersModel } from "../models/usersModel"; 
 import * as Yup from "yup";
 
 type TRegister = {
@@ -32,6 +33,14 @@ export async function register(req: Request, res: Response) {
       password,
       confirmPassword,
     }, { abortEarly: false }); // show all validation errors at once
+
+    await UsersModel.create({
+      fullName,
+      userName,
+      email,
+      password,
+    });
+
     res.status(200).json({
       message: "Resgistrattion Successfully",
       data: {
