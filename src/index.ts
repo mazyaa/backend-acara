@@ -23,7 +23,7 @@ async function init () {
             console.log(`Server is running on http://localhost:${PORT}`);
         });
     } catch (error) {
-        console.error(`Failed to initialize the application: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        console.error(`Failed to initialize the application: ${error}`);
     }
 }
 
