@@ -7,5 +7,6 @@ const router = express.Router();
 
 router.get('/testingApi', testingController.getTestingApi);
 router.post('/auth/register', authController.register);
+router.post('/auth/login', authController.login);
 
 export default router;

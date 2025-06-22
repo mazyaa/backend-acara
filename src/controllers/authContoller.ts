@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { UsersModel } from "../models/usersModel"; 
 import * as Yup from "yup";
+import { encrypt } from "../utils/encryption";
 
 type TRegister = {
   fullName: string;
@@ -9,6 +10,11 @@ type TRegister = {
   password: string;
   confirmPassword: string;
 };
+
+type TLogin = {
+  identifier: string;
+  password: string;
+}
 
 const registerValidationSchema = Yup.object({
   fullName: Yup.string().min(3).required(),
@@ -62,4 +68,44 @@ export async function register(req: Request, res: Response) {
       });
     }
   }
+}
+
+export async function login(req: Request, res: Response) {
+  const { identifier, password } = req.body as unknown as TLogin;
+
+  const getUserByIdentifier = await UsersModel.findOne({
+    $or: [
+      {
+        userName: identifier, 
+      },
+      {
+        email: identifier,
+      }
+    ]
+  });
+
+  // Check if user exists
+  if (!getUserByIdentifier) {
+    return res.status(404).json({
+      message: 'User not found!',
+      data: null
+    });
+  }
+
+  // Check if password is correct
+
+  const validatePassword: boolean = encrypt(password) === getUserByIdentifier.password;
+  
+  if (!validatePassword) {
+    return res.status(403).json({
+      message: 'Invalid password',
+      data: null
+    })
+  }
+
+  res.status(200).json({
+    message: 'Login Successfully!',
+    data: getUserByIdentifier
+  })
+
 }
