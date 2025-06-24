@@ -1,7 +1,9 @@
-import { Request, Response } from "express";
+import e, { Request, Response } from "express";
 import { UsersModel } from "../models/usersModel"; 
 import * as Yup from "yup";
 import { encrypt } from "../utils/encryption";
+import { generateToken } from "../utils/jwt";
+import { IReqUser } from "../middlewares/authMiddleware";
 
 type TRegister = {
   fullName: string;
@@ -103,9 +105,42 @@ export async function login(req: Request, res: Response) {
     })
   }
 
-  res.status(200).json({
-    message: 'Login Successfully!',
-    data: getUserByIdentifier
+  //return token 
+
+  const token = generateToken({
+    id: getUserByIdentifier._id, // use _id default property from mongoose for getting id
+    role: getUserByIdentifier.role,
   })
 
+  res.status(200).json({
+    message: 'Login Successfully!',
+    data: token,
+  })
+
+}
+
+export async function me(req: IReqUser, res: Response) {
+  try {
+    const user = req.user; // get user from request object, which is set in authMiddleware
+    const result = await UsersModel.findById(user?.id);
+
+    if (!result) {
+      return res.status(404).json({
+        message: 'User not found',
+        data: null
+      });
+    }
+
+    res.status(200).json({
+      message: 'Successfully get user data',
+      data: result,
+    })
+
+  } catch (error) {
+    const err = error as unknown as Error;
+    res.status(400).json({
+      message: err.message,
+      data: null
+    });
+  }
 }
