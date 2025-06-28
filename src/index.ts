@@ -15,6 +15,13 @@ async function init () {
         const PORT = process.env.PORT;
         
         app.use(express.json()); // middleware to parse JSON bodies
+
+        app.get('/', (req, res) => {
+            res.status(200).json({
+                message: 'Wlcome to the API',
+                data: null
+            })
+        });
         app.use('/api', router);
         app.use(bodyParser.json()); // middleware to parse JSON bodies with body-parser
         
