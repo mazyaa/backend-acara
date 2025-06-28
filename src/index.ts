@@ -18,7 +18,7 @@ async function init () {
 
         app.get('/', (req, res) => {
             res.status(200).json({
-                message: 'Wlcome to the API',
+                message: 'Welcome to the API Event Management System!',
                 data: null
             })
         });
