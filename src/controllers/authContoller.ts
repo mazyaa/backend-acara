@@ -73,6 +73,15 @@ export async function register(req: Request, res: Response) {
 }
 
 export async function login(req: Request, res: Response) {
+  //define anotation for swagger documentation
+  /**
+    #swagger.requestBody = {
+      required: true,
+      schema: {
+        $ref: "#/components/schemas/loginRequest"
+      }
+    }
+   */
   const { identifier, password } = req.body as unknown as TLogin;
 
   const getUserByIdentifier = await UsersModel.findOne({
@@ -120,6 +129,12 @@ export async function login(req: Request, res: Response) {
 }
 
 export async function me(req: IReqUser, res: Response) {
+  //define anotation for swagger documentation
+  /**
+    #swagger.security = [{
+      bearerAuth: []
+    }]
+   */
   try {
     const user = req.user; // get user from request object, which is set in authMiddleware
     const result = await UsersModel.findById(user?.id);
