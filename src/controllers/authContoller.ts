@@ -30,6 +30,9 @@ const registerValidationSchema = Yup.object({
 });
 
 export async function register(req: Request, res: Response) {
+  /**
+   #swagger.tags = ['Auth']
+   */
   const { fullName, userName, email, password, confirmPassword } =
     req.body as unknown as TRegister; // set and change type data on req.body to unknown first and then cast to TRegister for type safety
 
@@ -75,6 +78,7 @@ export async function register(req: Request, res: Response) {
 export async function login(req: Request, res: Response) {
   //define anotation for swagger documentation
   /**
+    #swagger.tags = ['Auth']
     #swagger.requestBody = {
       required: true,
       schema: {
@@ -119,7 +123,7 @@ export async function login(req: Request, res: Response) {
   const token = generateToken({
     id: getUserByIdentifier._id, // use _id default property from mongoose for getting id
     role: getUserByIdentifier.role,
-  })
+  });
 
   res.status(200).json({
     message: 'Login Successfully!',
@@ -131,13 +135,14 @@ export async function login(req: Request, res: Response) {
 export async function me(req: IReqUser, res: Response) {
   //define anotation for swagger documentation
   /**
+    #swagger.tags = ['Auth']
     #swagger.security = [{
       bearerAuth: []
     }]
    */
   try {
     const user = req.user; // get user from request object, which is set in authMiddleware
-    const result = await UsersModel.findById(user?.id);
+    const result = await UsersModel.findById(user?.id); // use optional chaining to avoid error if user is undefined and
 
     if (!result) {
       return res.status(404).json({
