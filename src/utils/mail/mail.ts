@@ -8,11 +8,9 @@ import {
     EMAIL_SMTP_USER,
     EMAIL_SMTP_PORT,
     EMAIL_SMTP_HOST,
-    EMAIL_SMTP_SERVICE_NAME
 } from '../env';
 
 const transporter = nodemailer.createTransport({
-    service: EMAIL_SMTP_SERVICE_NAME,
     host: EMAIL_SMTP_HOST,
     port: EMAIL_SMTP_PORT,
     secure: EMAIL_SMTP_SECURE,
@@ -31,10 +29,15 @@ export interface ISendMail {
 }
 
 const sendMail = async ({ ...mailParams }: ISendMail) => {
-    const result = await transporter.sendMail({
+   try {
+     const result = await transporter.sendMail({
         ...mailParams,
     })
     return result;
+   } catch (error) {
+         console.error('Error sending email:', error);
+         throw new Error('Failed to send email');
+    }
 }
 
 const renderMailHtml = async (template: string, data: any): Promise<string> => {

@@ -13,6 +13,9 @@ export interface IUserToken
     | "fullName"
     | "profilePicture"
     | "userName"
+    | "createdAt"
+    | "updatedAt"
+    | "deletedAt"
   > {
     id?: Types.ObjectId; // Optional id property
   } // Omit use for removing properties from the IUser interface (from usersModel.ts)

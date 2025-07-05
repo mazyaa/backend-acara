@@ -32,6 +32,12 @@ const registerValidationSchema = Yup.object({
 export async function register(req: Request, res: Response) {
   /**
    #swagger.tags = ['Auth']
+   #swagger.requestBody = {
+   required: true,
+   schema: {
+      $ref: "#/components/schemas/registerRequest"
+   }
+   }
    */
   const { fullName, userName, email, password, confirmPassword } =
     req.body as unknown as TRegister; // set and change type data on req.body to unknown first and then cast to TRegister for type safety

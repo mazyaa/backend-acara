@@ -67,6 +67,7 @@ UserSchema.pre("save", function (next) {
 // send activation email after saving the user
 UserSchema.post("save", async function (doc, next) {
   try {
+    console.log("📩 User post-save hook called!");
     const user = doc;
 
     console.log("sending activation email to", user.email);
@@ -75,7 +76,7 @@ UserSchema.post("save", async function (doc, next) {
       userName: user.userName,
       fullName: user.fullName,
       email: user.email,
-      activationCode: user.createdAt,
+      createdAt: user.createdAt,
       activationLink: `${CLIENT_HOST}/auth/activation?code=${user.activationCode}`,
     });
 
