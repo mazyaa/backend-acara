@@ -26,10 +26,12 @@ const UserSchema = new Schema<IUser>(
     userName: {
       type: Schema.Types.String,
       requires: true,
+      unique: true,
     },
     email: {
       type: Schema.Types.String,
       required: true,
+      unique: true,
     },
     password: {
       type: Schema.Types.String,

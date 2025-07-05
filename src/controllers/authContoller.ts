@@ -1,5 +1,5 @@
 import e, { Request, Response } from "express";
-import { UsersModel } from "../models/usersModel"; 
+import { UsersModel } from "../models/usersModel";
 import * as Yup from "yup";
 import { encrypt } from "../utils/encryption";
 import { generateToken } from "../utils/jwt";
@@ -16,17 +16,34 @@ type TRegister = {
 type TLogin = {
   identifier: string;
   password: string;
-}
+};
 
 const registerValidationSchema = Yup.object({
   fullName: Yup.string().min(3).required(),
   userName: Yup.string().required(),
   email: Yup.string().email().required(),
-  password: Yup.string().min(6).required(),
-  confirmPassword: Yup.string()
-    .oneOf([Yup.ref('password')], 'passwords must be matched')
+  password: Yup.string()
     .min(6)
     .required()
+    .min(6, "password must be at least 6 characters")
+    .test(
+      "at-least-one-uppercase-letter",
+      "password must contain at least one uppercase letter",
+      (value) => {
+        if (!value) return false; // if value is undefined or null or '' (not mandatory)
+        const regex = /^(?=.*[A-Z])/;
+        return regex.test(value);
+      }
+    ).test('at-least-one-number', 'password must contain at least one number', (value) => {
+      if (!value) return false; // if value is undefined or null or '' (not mandatory)
+      const regex = /^(?=.*[0-9])/;
+      return regex.test(value);
+    }
+    ),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref("password")], "passwords must be matched")
+    .min(6)
+    .required(),
 });
 
 export async function register(req: Request, res: Response) {
@@ -43,13 +60,16 @@ export async function register(req: Request, res: Response) {
     req.body as unknown as TRegister; // set and change type data on req.body to unknown first and then cast to TRegister for type safety
 
   try {
-    await registerValidationSchema.validate({
-      fullName,
-      userName,
-      email,
-      password,
-      confirmPassword,
-    }, { abortEarly: false }); // show all validation errors at once
+    await registerValidationSchema.validate(
+      {
+        fullName,
+        userName,
+        email,
+        password,
+        confirmPassword,
+      },
+      { abortEarly: false }
+    ); // show all validation errors at once
 
     await UsersModel.create({
       fullName,
@@ -69,13 +89,13 @@ export async function register(req: Request, res: Response) {
   } catch (error) {
     if (error instanceof Yup.ValidationError) {
       res.status(400).json({
-        messsage: 'Validation Error',
-        errors: error.errors // return all validation errors
-      })
+        messsage: "Validation Error",
+        errors: error.errors, // return all validation errors
+      });
     } else {
       res.status(500).json({
-        message: 'Internal Server Error',
-        error: error instanceof Error ? error.message : 'Unknown error'
+        message: "Internal Server Error",
+        error: error instanceof Error ? error.message : "Unknown error",
       });
     }
   }
@@ -97,34 +117,35 @@ export async function login(req: Request, res: Response) {
   const getUserByIdentifier = await UsersModel.findOne({
     $or: [
       {
-        userName: identifier, 
+        userName: identifier,
       },
       {
         email: identifier,
-      }
-    ]
+      },
+    ],
   });
 
   // Check if user exists
   if (!getUserByIdentifier) {
     return res.status(404).json({
-      message: 'User not found!',
-      data: null
+      message: "User not found!",
+      data: null,
     });
   }
 
   // Check if password is correct
 
-  const validatePassword: boolean = encrypt(password) === getUserByIdentifier.password;
-  
+  const validatePassword: boolean =
+    encrypt(password) === getUserByIdentifier.password;
+
   if (!validatePassword) {
     return res.status(403).json({
-      message: 'Invalid password',
-      data: null
-    })
+      message: "Invalid password",
+      data: null,
+    });
   }
 
-  //return token 
+  //return token
 
   const token = generateToken({
     id: getUserByIdentifier._id, // use _id default property from mongoose for getting id
@@ -132,10 +153,9 @@ export async function login(req: Request, res: Response) {
   });
 
   res.status(200).json({
-    message: 'Login Successfully!',
+    message: "Login Successfully!",
     data: token,
-  })
-
+  });
 }
 
 export async function me(req: IReqUser, res: Response) {
@@ -152,21 +172,20 @@ export async function me(req: IReqUser, res: Response) {
 
     if (!result) {
       return res.status(404).json({
-        message: 'User not found',
-        data: null
+        message: "User not found",
+        data: null,
       });
     }
 
     res.status(200).json({
-      message: 'Successfully get user data',
+      message: "Successfully get user data",
       data: result,
-    })
-
+    });
   } catch (error) {
     const err = error as unknown as Error;
     res.status(400).json({
       message: err.message,
-      data: null
+      data: null,
     });
   }
 }
