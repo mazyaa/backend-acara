@@ -30,13 +30,13 @@ const registerValidationSchema = Yup.object({
       "at-least-one-uppercase-letter",
       "password must contain at least one uppercase letter",
       (value) => {
-        if (!value) return false; // if value is undefined or null or '' (not mandatory)
-        const regex = /^(?=.*[A-Z])/;
+        if (!value) return false; // if value is undefined or null or '' (not mandatory) because have been use required() method
+        const regex = /^(?=.*[A-Z])/; // regex to check at least one uppercase letter
         return regex.test(value);
       }
     ).test('at-least-one-number', 'password must contain at least one number', (value) => {
-      if (!value) return false; // if value is undefined or null or '' (not mandatory)
-      const regex = /^(?=.*[0-9])/;
+      if (!value) return false; // if value is undefined or null or '' (not mandatory) because have been use required() method
+      const regex = /^(?=.*\d)/; // regex to check at least one number
       return regex.test(value);
     }
     ),
@@ -115,7 +115,8 @@ export async function login(req: Request, res: Response) {
   const { identifier, password } = req.body as unknown as TLogin;
 
   const getUserByIdentifier = await UsersModel.findOne({
-    $or: [
+    // find user by identifier, which can be email or username
+    $or: [ 
       {
         userName: identifier,
       },
@@ -123,6 +124,7 @@ export async function login(req: Request, res: Response) {
         email: identifier,
       },
     ],
+    isActive: true, // check if user is active
   });
 
   // Check if user exists
@@ -187,5 +189,45 @@ export async function me(req: IReqUser, res: Response) {
       message: err.message,
       data: null,
     });
+  }
+}
+
+export async function activation(req: Request, res: Response) {
+  /**
+    #swagger.tags = ['Auth]
+    #swagger.requestBody = {
+      required: true,
+      schema: {
+        $ref: "#/components/schemas/activationRequest"
+      }
+
+    }
+   */
+  try {
+    const { code } = req.body as { code: string }; // destruct code as string from request body
+
+    const user = await UsersModel.findOneAndUpdate(
+      {
+        activationCode: code, // find user by activation code
+      },
+      {
+        isActive: true, // set isAcrtive to true
+      },
+      {
+        new: true, // use new for realtime update property isActive set to true
+      }
+    );
+
+    res.status(200).json({
+      message: "Account activated successfully",
+      data: user,
+    })
+
+  } catch (error) {
+    const err = error as unknown as Error;
+    res.status(400).json({
+      message: err.message,
+      data: null,
+    })
   }
 }

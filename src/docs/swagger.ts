@@ -63,6 +63,17 @@ const doc = {
                     "confirmPassword",
                 ],
             },
+            activationRequest: {
+                type: "object",
+                properties: {
+                    activationCode: {
+                        type: "string",
+                        description: "Activation code sent to the user's email",
+                        example: "1234567890abcdef",
+                    },
+                },
+                required: ["activationCode"],
+            },
             loginRequest: {
                 type: "object",
                 properties: {
