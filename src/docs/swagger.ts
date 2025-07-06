@@ -26,69 +26,18 @@ const doc = {
         },
         schemas: {
             registerRequest: {
-                type: "object",
-                properties: {
-                    fullName: {
-                        type: "string",
-                        description: "Full name of the user",
-                        example: "John Doe",
-                    },
-                    email: {
-                        type: "string",
-                        format: "email",
-                        description: "Email address of the user",
-                        example: "johndoe@gmail.com",
-                    },
-                    userName: {
-                        type: "string",
-                        description: "Username of the user",
-                        example: "johndoe123",
-                    },
-                    password: {
-                        type: "string",
-                        description: "Password of the user",
-                        example: "password123",
-                    },
-                    confirmPassword: {
-                        type: "string",
-                        description: "Confirmation of the user's password",
-                        example: "password123",
-                    },
-                },
-                required: [
-                    "fullName",
-                    "email",
-                    "userName",
-                    "password",
-                    "confirmPassword",
-                ],
+                fullName: "John Doe",
+                email: "john@example.com",
+                userName: "johndoe",
+                password: "password123",
+                confirmPassword: "password123",
             },
             activationRequest: {
-                type: "object",
-                properties: {
-                    activationCode: {
-                        type: "string",
-                        description: "Activation code sent to the user's email",
-                        example: "1234567890abcdef",
-                    },
-                },
-                required: ["activationCode"],
+                activationCode: "abxyz1234",
             },
             loginRequest: {
-                type: "object",
-                properties: {
-                    identifier: {
-                        type: "string",
-                        description: "Email or username of the user",
-                        example: "mazyaa123",
-                    },
-                    password: {
-                        type: "string",
-                        description: "Password of the user",
-                        example: "password123",
-                    },
-                },
-                required: ["identifier", "password"],
+                identifier: "JohnDoe",
+                password: "password123",
             },
         },
     },
@@ -97,4 +46,4 @@ const doc = {
 const outputFile = "./swagger-output.json";
 const endpointsFile = ["../routes/api.ts"];
 
-swaggerAutogen({ openApi: "3.0.0" })(outputFile, endpointsFile, doc);
+swaggerAutogen({ openapi: "3.0.0" })(outputFile, endpointsFile, doc);

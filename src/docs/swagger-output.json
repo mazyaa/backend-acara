@@ -5,7 +5,6 @@
     "title": "API Documentation Event Management System",
     "description": "This is the API documentation for the Event Management System. It provides details about the available endpoints, request parameters, and response formats."
   },
-  "host": "localhost:3000",
   "servers": [
     {
       "url": "http://localhost:3000/api",
@@ -15,10 +14,6 @@
       "url": "https://backend-acara-wine.vercel.app/api",
       "description": "Production server"
     }
-  ],
-  "basePath": "/",
-  "schemes": [
-    "http"
   ],
   "paths": {
     "/auth/register": {
@@ -55,6 +50,37 @@
         }
       }
     },
+    "/auth/activation": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/activationRequest"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/activationRequest"
+              }
+            }
+          }
+        }
+      }
+    },
     "/auth/login": {
       "post": {
         "tags": [
@@ -83,37 +109,6 @@
             "application/xml": {
               "schema": {
                 "$ref": "#/components/schemas/loginRequest"
-              }
-            }
-          }
-        }
-      }
-    },
-    "/auth/activation": {
-      "post": {
-        "tags": [
-          "Auth"
-        ],
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          }
-        },
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/activationRequest"
-              }
-            },
-            "application/xml": {
-              "schema": {
-                "$ref": "#/components/schemas/activationRequest"
               }
             }
           }
@@ -158,70 +153,56 @@
         "properties": {
           "fullName": {
             "type": "string",
-            "description": "Full name of the user",
             "example": "John Doe"
           },
           "email": {
             "type": "string",
-            "format": "email",
-            "description": "Email address of the user",
-            "example": "johndoe@gmail.com"
+            "example": "john@example.com"
           },
           "userName": {
             "type": "string",
-            "description": "Username of the user",
-            "example": "johndoe123"
+            "example": "johndoe"
           },
           "password": {
             "type": "string",
-            "description": "Password of the user",
             "example": "password123"
           },
           "confirmPassword": {
             "type": "string",
-            "description": "Confirmation of the user's password",
             "example": "password123"
           }
         },
-        "required": [
-          "fullName",
-          "email",
-          "userName",
-          "password",
-          "confirmPassword"
-        ]
+        "xml": {
+          "name": "registerRequest"
+        }
       },
       "activationRequest": {
         "type": "object",
         "properties": {
           "activationCode": {
             "type": "string",
-            "description": "Activation code sent to the user's email",
-            "example": "1234567890abcdef"
+            "example": "abxyz1234"
           }
         },
-        "required": [
-          "activationCode"
-        ]
+        "xml": {
+          "name": "activationRequest"
+        }
       },
       "loginRequest": {
         "type": "object",
         "properties": {
           "identifier": {
             "type": "string",
-            "description": "Email or username of the user",
-            "example": "mazyaa123"
+            "example": "JohnDoe"
           },
           "password": {
             "type": "string",
-            "description": "Password of the user",
             "example": "password123"
           }
         },
-        "required": [
-          "identifier",
-          "password"
-        ]
+        "xml": {
+          "name": "loginRequest"
+        }
       }
     }
   }
