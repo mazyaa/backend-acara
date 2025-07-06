@@ -89,7 +89,7 @@
         }
       }
     },
-    "auth/activation": {
+    "/auth/activation": {
       "post": {
         "tags": [
           "Auth"
