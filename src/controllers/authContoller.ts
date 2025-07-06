@@ -194,7 +194,7 @@ export async function me(req: IReqUser, res: Response) {
 
 export async function activation(req: Request, res: Response) {
   /**
-    #swagger.tags = ['Auth]
+    #swagger.tags = ['Auth']
     #swagger.requestBody = {
       required: true,
       schema: {
