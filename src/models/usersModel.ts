@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { encrypt } from "../utils/encryption";
+import { encrypt, generateActivationCode } from "../utils/encryption";
 import { sendMail, renderMailHtml } from "../utils/mail/mail";
 import { CLIENT_HOST, EMAIL_SMTP_USER } from "../utils/env";
 
@@ -63,7 +63,7 @@ const UserSchema = new Schema<IUser>(
 UserSchema.pre("save", function (next) {
   const user = this;
   user.password = encrypt(user.password);
-  user.activationCode = encrypt(user.id);
+  user.activationCode = generateActivationCode(user.id);
   next();
 });
 
