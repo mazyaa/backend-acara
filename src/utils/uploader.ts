@@ -11,8 +11,22 @@ cloudinary.config({
     api_secret: CLOUDINARY_API_SECRET,
 });
 
+// function for Converts a file buffer to a Data URL format
+const toDataURL = (file: Express.Multer.File) => {
+  const b64 = Buffer.from(file.buffer).toString("base64");
+  const dataURL = `data:${file.mimetype};base64,${b64}`;
+  return dataURL;
+};
+
 export default {
-    async singleUpload() {},
-    async multipleUPload() {},
-    async remove() {},
+    // an async function to upload a single file  
+    async singleUpload(file: Express.Multer.File) {
+      const fileDataURL = toDataURL(file);
+
+      const result = await cloudinary.uploader.upload(fileDataURL, {
+        resource_type: "auto"
+      })
+    },
+    async multipleUpload(files: Express.Multer.File[]) {},
+    async remove(fileUrl: string) {},
 }
