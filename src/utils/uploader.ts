@@ -25,8 +25,20 @@ export default {
 
       const result = await cloudinary.uploader.upload(fileDataURL, {
         resource_type: "auto"
-      })
+      });
+
+      return result;
     },
-    async multipleUpload(files: Express.Multer.File[]) {},
+    async multipleUpload(files: Express.Multer.File[]) {
+
+      // map files to an array of promises for each upload
+      const uploadBatch = files.map((item) => {
+        const result = this.singleUpload(item);
+        return result;
+      });
+
+      const results = await Promise.all(uploadBatch); // use Promise.all to wait for all uploads to complete
+      return results;
+    },
     async remove(fileUrl: string) {},
 }
