@@ -6,9 +6,9 @@ import {
 } from "./env";
 
 cloudinary.config({
-    cloud_name: CLOUDINARY_CLOUD_NAME,
-    api_key: CLOUDINARY_API_KEY,
-    api_secret: CLOUDINARY_API_SECRET,
+  cloud_name: CLOUDINARY_CLOUD_NAME,
+  api_key: CLOUDINARY_API_KEY,
+  api_secret: CLOUDINARY_API_SECRET,
 });
 
 // function for Converts a file buffer to a Data URL format
@@ -18,27 +18,42 @@ const toDataURL = (file: Express.Multer.File) => {
   return dataURL;
 };
 
+const getPublicIdFromFileUrl = (fileUrl: string) => {
+  const fileNameUsingSubstring = fileUrl.substring(
+    fileUrl.lastIndexOf("/") + 1
+  );
+
+  const publicId = fileNameUsingSubstring.substring(
+    0,
+    fileNameUsingSubstring.lastIndexOf(".")
+  );
+
+  return publicId;
+};
+
 export default {
-    // an async function to upload a single file  
-    async singleUpload(file: Express.Multer.File) {
-      const fileDataURL = toDataURL(file);
+  // an async function to upload a single file
+  async singleUpload(file: Express.Multer.File) {
+    const fileDataURL = toDataURL(file);
 
-      const result = await cloudinary.uploader.upload(fileDataURL, {
-        resource_type: "auto"
-      });
+    const result = await cloudinary.uploader.upload(fileDataURL, {
+      resource_type: "auto",
+    });
 
+    return result;
+  },
+  async multipleUpload(files: Express.Multer.File[]) {
+    // map files to an array of promises for each upload
+    const uploadBatch = files.map((item) => {
+      const result = this.singleUpload(item);
       return result;
-    },
-    async multipleUpload(files: Express.Multer.File[]) {
+    });
 
-      // map files to an array of promises for each upload
-      const uploadBatch = files.map((item) => {
-        const result = this.singleUpload(item);
-        return result;
-      });
-
-      const results = await Promise.all(uploadBatch); // use Promise.all to wait for all uploads to complete
-      return results;
-    },
-    async remove(fileUrl: string) {},
-}
+    const results = await Promise.all(uploadBatch); // use Promise.all to wait for all uploads to complete
+    return results;
+  },
+  async remove(fileUrl: string) {
+    const publicId = getPublicIdFromFileUrl(fileUrl);
+    const result = await cloudinary.uploader.destroy(publicId);
+  },
+};
