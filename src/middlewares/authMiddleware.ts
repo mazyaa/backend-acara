@@ -1,10 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
-import { getUserData, IUserToken } from '../utils/jwt';
+import { getUserData } from '../utils/jwt';
 import jwt from 'jsonwebtoken';
+import { IReqUser } from '../utils/interfaces';
 
-export interface IReqUser extends Request {
-    user?: IUserToken 
-} // set user property on Request interface from interface IUserToken in jwt.ts file
 
 export default function authMiddleware(req: Request, res: Response, next: NextFunction) {
     const authorization = req.headers?.authorization;

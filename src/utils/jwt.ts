@@ -2,23 +2,7 @@ import { Types } from "mongoose";
 import { IUser } from "../models/usersModel";
 import jwt from "jsonwebtoken";
 import { SECRET_KEY } from "./env";
-
-export interface IUserToken
-  extends Omit<
-    IUser, // interface IUser from usersModel.ts (parent interface)
-    | "password"
-    | "activationCode"
-    | "isActive"
-    | "email"
-    | "fullName"
-    | "profilePicture"
-    | "userName"
-    | "createdAt"
-    | "updatedAt"
-    | "deletedAt"
-  > {
-    id?: Types.ObjectId; // Optional id property
-  } // Omit use for removing properties from the IUser interface (from usersModel.ts)
+import { IUserToken } from "./interfaces";
 
 
 export function generateToken(user: IUserToken): string {

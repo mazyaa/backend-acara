@@ -31,29 +31,29 @@ const getPublicIdFromFileUrl = (fileUrl: string) => {
   return publicId;
 };
 
-export default {
-  // an async function to upload a single file
-  async singleUpload(file: Express.Multer.File) {
-    const fileDataURL = toDataURL(file);
+// an async function to upload a single file
+export async function singleUpload(file: Express.Multer.File) {
+  const fileDataURL = toDataURL(file);
 
-    const result = await cloudinary.uploader.upload(fileDataURL, {
-      resource_type: "auto",
-    });
+  const result = await cloudinary.uploader.upload(fileDataURL, {
+    resource_type: "auto",
+  });
 
+  return result;
+}
+
+export async function multipleUpload(files: Express.Multer.File[]) {
+  // map files to an array of promises for each upload
+  const uploadBatch = files.map((item) => {
+    const result = singleUpload(item);
     return result;
-  },
-  async multipleUpload(files: Express.Multer.File[]) {
-    // map files to an array of promises for each upload
-    const uploadBatch = files.map((item) => {
-      const result = this.singleUpload(item);
-      return result;
-    });
+  });
 
-    const results = await Promise.all(uploadBatch); // use Promise.all to wait for all uploads to complete
-    return results;
-  },
-  async remove(fileUrl: string) {
-    const publicId = getPublicIdFromFileUrl(fileUrl);
-    const result = await cloudinary.uploader.destroy(publicId);
-  },
-};
+  const results = await Promise.all(uploadBatch); // use Promise.all to wait for all uploads to complete
+  return results;
+}
+
+export async function remove(fileUrl: string) {
+  const publicId = getPublicIdFromFileUrl(fileUrl);
+  const result = await cloudinary.uploader.destroy(publicId);
+}
