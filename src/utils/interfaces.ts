@@ -24,3 +24,8 @@ export interface IReqUser extends Request {
     user?: IUserToken 
 } // set user property on Request interface from interface IUserToken in jwt.ts file
 
+export interface IPaginationQuery {
+  page: number;
+  limit: number;
+  search?: string;
+}

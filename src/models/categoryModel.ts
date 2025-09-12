@@ -7,7 +7,7 @@ export const categoryDAO = Yup.object({
   name: Yup.string().required(),
   description: Yup.string().required(),
   icon: Yup.string().required(),
-});
+}); // category DAO is a data access object
 
 // set category type from categoryDAO
 export type Category = Yup.InferType<typeof categoryDAO>;

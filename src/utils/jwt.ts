@@ -1,5 +1,3 @@
-import { Types } from "mongoose";
-import { IUser } from "../models/usersModel";
 import jwt from "jsonwebtoken";
 import { SECRET_KEY } from "./env";
 import { IUserToken } from "./interfaces";
