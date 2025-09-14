@@ -15,20 +15,13 @@ export async function create(req: IReqUser, res: Response) {
 }
 
 export async function findAll(req: IReqUser, res: Response) {
-  try {
-  } catch (error) {
-    response.error(res, error, "failed find all category");
-  }
-}
-
-export async function findOne(req: IReqUser, res: Response) {
-  const {
+   const {
     page = 1,
     limit = 10,
     search,
   } = req.query as unknown as IPaginationQuery;
   try {
-    // handling search
+     // handling search
     const query = {};
 
     if (search) {
@@ -46,13 +39,22 @@ export async function findOne(req: IReqUser, res: Response) {
         .sort({ createdAt: -1}) // sort by createdAt descending
         .exec();
 
+    // for count all data which match with query example with search  
     const count = await CategoryModel.countDocuments(query);
 
     response.pagination(res, result, {
-        totalPages: Math.ceil(count / limit),
+        totalPages: Math.ceil(count / limit), // total all data / limit for get total pages
         currentPage: page,
-        total: count, 
+        total: count, // total all data which match with query
     }, 'Success get all categories');
+  } catch (error) {
+    response.error(res, error, "failed find all category");
+  }
+}
+
+export async function findOne(req: IReqUser, res: Response) {
+  try {
+   
 
   } catch (error) {
     response.error(res, error, "failed find one category");
