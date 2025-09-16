@@ -6,6 +6,7 @@ import * as authController from "../controllers/authContoller";
 import * as mediaMiddleware from "../middlewares/mediaMiddleware";
 import * as mediaController from "../controllers/mediaController";
 import * as CategoryController from "../controllers/categoryController";
+import * as regionController from "../controllers/regionController";
 const router = express.Router();
 
 // auth routes
@@ -33,6 +34,17 @@ router.delete(
   CategoryController.remove
 );
 
+//region routes
+router.get("/regions", regionController.getAllProvinces);
+router.get("/region/:id/province", regionController.getProvince); // get province by id
+router.get("region/:id/regency", regionController.getRegency); // get regency by id province
+router.get("/region/:id/district", regionController.getDistrict); // get district by id regency
+router.get("/region/:id/village", regionController.getVillage); // get village by id district
+router.get("/region-search", regionController.findByCity); // search by city name
+
+
+
+// media routes
 router.post(
   "/media/upload-single",
   [
