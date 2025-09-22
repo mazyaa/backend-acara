@@ -20,7 +20,7 @@ export const eventDAO = Yup.object({
     location: Yup.object().required(),
 });
 
-type TEvent = Yup.InferType<typeof eventDAO>; // use infertype to get type from yup schema
+export type TEvent = Yup.InferType<typeof eventDAO>; // use infertype to get type from yup schema
 
 // change category to ObjectId for foreign key reference from category collection
 export interface IEvent extends Omit<TEvent, "category" | "createdBy"> {
@@ -97,6 +97,6 @@ EventSchema.pre("save", function (){
         const slug = this.name.split(" ").join("-").toLowerCase();
         this.slug = `${slug}`;
     }
-});
+}); 
 
 export const EventModel = mongoose.model("Event", EventSchema);

@@ -7,6 +7,7 @@ import * as mediaMiddleware from "../middlewares/mediaMiddleware";
 import * as mediaController from "../controllers/mediaController";
 import * as CategoryController from "../controllers/categoryController";
 import * as regionController from "../controllers/regionController";
+import * as eventController from "../controllers/eventController";
 const router = express.Router();
 
 // auth routes
@@ -42,7 +43,25 @@ router.get("/region/:id/district", regionController.getDistrict); // get village
 router.get("/region/:id/village", regionController.getVillage); // find one village by id
 router.get("/region-search", regionController.findByCity); // search by city name
 
-
+//event routes
+router.post(
+  "/event",
+  [authMiddleware, aclMiddleware([ROLES.ADMIN])],
+  eventController.create
+);
+router.get("/event", eventController.findAll);
+router.get("/event/:id", eventController.findOne);
+router.put(
+  "/event/:id",
+  [authMiddleware, aclMiddleware([ROLES.ADMIN])],
+  eventController.update
+);
+router.delete(
+  "/event/:id",
+  [authMiddleware, aclMiddleware([ROLES.ADMIN])],
+  eventController.remove
+);
+router.get("/event/:slug/slug", eventController.findOneBySlug);
 
 // media routes
 router.post(
