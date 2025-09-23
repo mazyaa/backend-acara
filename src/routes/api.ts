@@ -49,7 +49,7 @@ router.post(
   [authMiddleware, aclMiddleware([ROLES.ADMIN])],
   eventController.create
 );
-router.get("/event", eventController.findAll);
+router.get("/events", eventController.findAll);
 router.get("/event/:id", eventController.findOne);
 router.put(
   "/event/:id",
