@@ -21,18 +21,50 @@ router.post(
   "/category",
   [authMiddleware, aclMiddleware([ROLES.ADMIN])],
   CategoryController.create
+  /*
+  #swagger.tags = ['Category]
+  #swagger.security = [{ "bearerAuth": {} }]
+  #swagger.requestBody = {
+    required: true, 
+    schema: {
+      $ref: "#/components/schemas/CreateCategoryRequest"
+    }
+  }
+  */
 );
-router.get("/category", CategoryController.findAll);
-router.get("/category/:id", CategoryController.findOne);
+router.get("/category", CategoryController.findAll
+  /*
+  #swagger.tags = ['Category']
+  */
+);
+router.get("/category/:id", CategoryController.findOne
+  /*
+  #swagger.tags = ['Category']
+  */
+);
 router.put(
   "/category/:id",
   [authMiddleware, aclMiddleware([ROLES.ADMIN])],
   CategoryController.update
+  /*
+  #swagger.tags = ['Category]
+  #swagger.security = [{ "bearerAuth": {} }]
+  #swagger.requestBody = {
+      required: true, 
+      schema: {
+        $ref: "#/components/schemas/CreateCategoryRequest"
+    }
+  }
+  */
 );
 router.delete(
   "/category/:id",
   [authMiddleware, aclMiddleware([ROLES.ADMIN])],
   CategoryController.remove
+  /*
+  #swagger.tags = ['Category']
+  #swagger.security = [{ "bearerAuth": {} }]
+  */
 );
 
 //region routes
