@@ -80,20 +80,56 @@ router.post(
   "/event",
   [authMiddleware, aclMiddleware([ROLES.ADMIN])],
   eventController.create
+  /*
+  #swagger.tags = ['Events]
+  #swagger.security = [{ "bearerAuth": {} }]
+  #swagger.requestBody = {
+    required: true,
+    schema: {
+      $ref: "#/components/schemas/CreateEventRequest"
+    }
+  }
+  */
 );
-router.get("/events", eventController.findAll);
-router.get("/event/:id", eventController.findOne);
+router.get("/events", eventController.findAll
+  /*
+  #swagger.tags = ['Events']
+  */
+);
+router.get("/event/:id", eventController.findOne
+  /*
+  #swagger.tags = ['Events']
+  */
+);
 router.put(
   "/event/:id",
   [authMiddleware, aclMiddleware([ROLES.ADMIN])],
   eventController.update
+  /*
+  #swagger.tags = ['Events]
+  #swagger.security = [{ "bearerAuth": {} }]
+  #swagger.requestBody = {
+    required: true,
+    schema: {
+      $ref: "#/components/schemas/CreateEventRequest"
+    }
+  }
+  */
 );
 router.delete(
   "/event/:id",
   [authMiddleware, aclMiddleware([ROLES.ADMIN])],
   eventController.remove
+  /*
+  #swagger.tags = ['Events]
+  #swagger.security = [{ "bearerAuth": {} }]
+  */
 );
-router.get("/event/:slug/slug", eventController.findOneBySlug);
+router.get("/event/:slug/slug", eventController.findOneBySlug
+  /*
+  #swagger.tags = ['Events']
+  */
+);
 
 // media routes
 router.post(
