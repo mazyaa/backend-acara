@@ -68,12 +68,36 @@ router.delete(
 );
 
 //region routes
-router.get("/regions", regionController.getAllProvinces);
-router.get("/region/:id/province", regionController.getProvince); // get regency by id province
-router.get("/region/:id/regency", regionController.getRegency); // get district by id regency
-router.get("/region/:id/district", regionController.getDistrict); // get village by id district
-router.get("/region/:id/village", regionController.getVillage); // find one village by id
-router.get("/region-search", regionController.findByCity); // search by city name
+router.get("/regions", regionController.getAllProvinces
+  /*
+  #swagger.tags = ['Regions']
+  */
+);
+router.get("/region/:id/province", regionController.getProvince
+  /*
+  #swagger.tags = ['Regions']
+  */
+); // get regency by id province
+router.get("/region/:id/regency", regionController.getRegency
+  /*
+  #swagger.tags = ['Regions']
+  */
+); // get district by id regency
+router.get("/region/:id/district", regionController.getDistrict
+  /*
+  #swagger.tags = ['Regions']
+  */
+); // get village by id district
+router.get("/region/:id/village", regionController.getVillage
+  /*
+  #swagger.tags = ['Regions']
+  */
+); // find one village by id
+router.get("/region-search", regionController.findByCity
+  /*
+  #swagger.tags = ['Regions']
+  */
+); // search by city name
 
 //event routes
 router.post(
