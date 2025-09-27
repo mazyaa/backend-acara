@@ -22,7 +22,7 @@ router.post(
   [authMiddleware, aclMiddleware([ROLES.ADMIN])],
   CategoryController.create
   /*
-  #swagger.tags = ['Category]
+  #swagger.tags = ['Category']
   #swagger.security = [{ "bearerAuth": {} }]
   #swagger.requestBody = {
     required: true, 
@@ -47,7 +47,7 @@ router.put(
   [authMiddleware, aclMiddleware([ROLES.ADMIN])],
   CategoryController.update
   /*
-  #swagger.tags = ['Category]
+  #swagger.tags = ['Category']
   #swagger.security = [{ "bearerAuth": {} }]
   #swagger.requestBody = {
       required: true, 
@@ -105,7 +105,7 @@ router.post(
   [authMiddleware, aclMiddleware([ROLES.ADMIN])],
   eventController.create
   /*
-  #swagger.tags = ['Events]
+  #swagger.tags = ['Events']
   #swagger.security = [{ "bearerAuth": {} }]
   #swagger.requestBody = {
     required: true,
@@ -130,7 +130,7 @@ router.put(
   [authMiddleware, aclMiddleware([ROLES.ADMIN])],
   eventController.update
   /*
-  #swagger.tags = ['Events]
+  #swagger.tags = ['Events']
   #swagger.security = [{ "bearerAuth": {} }]
   #swagger.requestBody = {
     required: true,
@@ -145,7 +145,7 @@ router.delete(
   [authMiddleware, aclMiddleware([ROLES.ADMIN])],
   eventController.remove
   /*
-  #swagger.tags = ['Events]
+  #swagger.tags = ['Events']
   #swagger.security = [{ "bearerAuth": {} }]
   */
 );
@@ -164,6 +164,27 @@ router.post(
     mediaMiddleware.single("file"),
   ],
   mediaController.single
+
+  /*
+  #swagger.tags = ['Media']
+  #swagger.security = [{ "bearerAuth": {} }]
+  #swagger.requestBody = {
+    required: true,
+    content: {
+      "multipart/form-data": {
+        schema: {
+          type: "object",
+          properties: {
+            file: {
+              type: "string",
+              format: "binary",
+            }
+          }
+        }
+      }
+    }
+  }
+  */
 );
 
 router.post(
@@ -174,12 +195,45 @@ router.post(
     mediaMiddleware.multiple("files"),
   ],
   mediaController.multiple
+  /*
+  #swagger.tags = ['Media']
+  #swagger.security = [{ "bearerAuth": {} }]
+  #swagger.requestBody = {
+    required: true,
+    content: {
+      "multipart/form-data": {
+        schema: {
+          type: "object", 
+          properties: {
+            files: {
+              type: "array",
+              items: {
+                type: "string",
+                format: "binary"  
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  */
 );
 
 router.delete(
   "/media/remove",
   [authMiddleware, aclMiddleware([ROLES.ADMIN, ROLES.MEMBER])],
   mediaController.remove
+  /*
+  #swagger.tags = ['Media']
+  #swagger.security = [{ "bearerAuth": {} }]
+  #swagger.requestBody = {
+    required: true,
+    schema: {
+      $ref: "#/components/schemas/RemoveMediaRequest"
+    }
+  }
+  */
 );
 
 export default router;
