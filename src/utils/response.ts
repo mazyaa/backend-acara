@@ -59,7 +59,7 @@ export function error(res: Response, error: unknown, message: string) {
       status: 500,
       message,
     },
-    daya: error,
+    data: error,
   })
 }
 
