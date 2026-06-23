@@ -31,6 +31,17 @@ export function error(res: Response, error: unknown, message: string) {
     });
   }
 
+  // error 404
+  if ((error as any)?.status === 404) {
+    return res.status(404).json({
+      meta: {
+        status: 404,
+        message,
+      },
+      data: null,
+    });
+  }
+
   //error for mongoose (orm)
   if (error instanceof mongoose.Error) {
     return res.status(500).json({
@@ -86,5 +97,5 @@ export function pagination(
         },
         data,
         pagination,
-    })
+    });
 }

@@ -27,7 +27,7 @@ const getPublicIdFromFileUrl = (fileUrl: string) => {
     0,
     fileNameUsingSubstring.lastIndexOf(".")
   );
-
+``
   return publicId;
 };
 

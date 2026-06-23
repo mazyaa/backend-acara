@@ -1,107 +1,190 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Registration Success</title>
-    <style>
-      body {
-        font-family: "Arial", sans-serif;
-        margin: 0;
-        padding: 0;
-      }
-      .parent {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 100vh;
-      }
-      .container {
-        max-width: 600px;
-        margin: 2px auto;
-        background-color: #ffffff;
-        border: 1px solid #dddddd;
-        border-radius: 5px;
-        overflow: hidden;
-      }
-      .header {
-        background-color: #4caf50;
-        color: #ffffff;
-        text-align: center;
-        padding: 20px;
-      }
-      .content {
-        padding: 20px;
-      }
-      .footer {
-        background-color: #f1f1f1;
-        text-align: center;
-        padding: 10px;
-        font-size: 12px;
-        color: #777777;
-      }
-      .button {
-        display: inline-block;
-        padding: 10px 20px;
-        text-decoration: none;
-        border-radius: 5px;
-        margin: 20px 0;
-        text-decoration: none;
-        border-radius: 5px;
-        border: 1px solid #4caf50;
-        background-color: #4caf50;
-        color: white;
-      }
-      @media (max-width: 600px) {
-        .container {
-          width: 100%;
-          margin: 0;
-          border-radius: 0;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <div class="parent">
-      <div class="container">
-        <div class="header">
-          <h1>Selamat Datang!</h1>
-        </div>
-        <div class="content">
-          <p>Halo <%= userName %></p>
-          <p>
-            Terimakasih Telah Mendaftar Dilayanan Kami! Berikut Adalah Informasi
-            Dari Akun Anda
-          </p>
-          <ul>
-            <li>
-              <strong>Nama: </strong>
-              <%= fullName %>
-            </li>
-            <li>
-              <strong>Email: </strong>
-              <%= email %>
-            </li>
-            <li>
-              <strong>Tanggal Pendaftaran: </strong>
-              <%= createdAt %>
-            </li>
-          </ul>
-          <p>Untuk memulai, silahkan klik tombol dibawah ini</p>
-          <a href="<%= activationLink %>" class="button">Aktifkan akun</a>
-          <p>
-            Jika anda memiliki pertanyaan, jangan ragu untuk menghubungi kami
-          </p>
-          <p>Salam hangat, ACARA</p>
-        </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="x-apple-disable-message-reformatting" />
+  <title>Registration Success</title>
+  <style>
+    table, td, div, a { box-sizing: border-box; }
+    body, table, td, p, a, li, blockquote {
+      -ms-text-size-adjust: 100%;
+      -webkit-text-size-adjust: 100%;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100% !important;
+      height: 100% !important;
+      background-color: #f4f6f9;
+    }
+    body.dark-mode {
+      background-color: #f4f6f9;
+    }
+    @media only screen and (max-width: 600px) {
+      .container-table { width: 100% !important; }
+      .content-padding { padding: 30px 20px !important; }
+      .header-padding { padding: 30px 20px !important; }
+      .button-wrapper { padding: 15px 0 !important; }
+      .responsive-img { width: 100% !important; height: auto !important; }
+      .info-table td { display: block !important; width: 100% !important; padding: 4px 0 !important; }
+      .info-label { padding-bottom: 0 !important; }
+      .footer-text { font-size: 11px !important; }
+    }
+    @media only screen and (max-width: 480px) {
+      .content-padding { padding: 25px 16px !important; }
+      .header-padding { padding: 25px 16px !important; }
+      .greeting-text { font-size: 22px !important; }
+      .body-text { font-size: 14px !important; }
+    }
+  </style>
+</head>
+<body style="margin:0;padding:0;width:100% !important;height:100% !important;background-color:#f4f6f9;font-family:Arial,'Helvetica Neue',Helvetica,sans-serif;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f4f6f9;width:100%;">
+    <tr>
+      <td align="center" valign="top" style="padding:30px 10px;">
+        <!--[if mso]>
+        <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" align="center"><tr><td>
+        <![endif]-->
+        <table role="presentation" class="container-table" width="100%" max-width="600" cellpadding="0" cellspacing="0" border="0" align="center" style="max-width:600px;width:100%;background-color:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.06);">
 
-        <div class="footer">
-          <p>
-            &copy; 2023 ACARA Event Management Sistem. Semua HAK Dilindungi.
-          </p>
-        </div>
-      </div>
-    </div>
-  </body>
+          <!-- HERO / HEADER -->
+          <tr>
+            <td class="header-padding" align="center" valign="middle" style="background-color:#2e7d32;padding:36px 30px 30px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td align="center" style="font-size:0;">
+                    <div style="display:inline-block;width:60px;height:60px;background-color:#ffffff;border-radius:50%;line-height:60px;text-align:center;font-size:28px;font-weight:bold;color:#2e7d32;margin-bottom:16px;">A</div>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="center" style="font-size:24px;font-weight:bold;color:#ffffff;letter-spacing:0.5px;padding-top:4px;">Selamat Datang!</td>
+                </tr>
+                <tr>
+                  <td align="center" style="font-size:15px;color:#c8e6c9;padding-top:8px;">Akun Anda telah berhasil dibuat</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- CONTENT -->
+          <tr>
+            <td class="content-padding" align="left" valign="top" style="padding:36px 30px 20px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td class="greeting-text" style="font-size:18px;font-weight:bold;color:#333333;padding-bottom:12px;">
+                    Halo <%= userName %>,
+                  </td>
+                </tr>
+                <tr>
+                  <td class="body-text" style="font-size:15px;line-height:1.7;color:#555555;padding-bottom:20px;">
+                    Terima kasih telah mendaftar di <strong style="color:#2e7d32;">ACARA</strong>! Berikut adalah informasi akun Anda:
+                  </td>
+                </tr>
+              </table>
+
+              <!-- INFO TABLE -->
+              <table role="presentation" class="info-table" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f9fafb;border-radius:6px;">
+                <tr>
+                  <td style="padding:16px 20px;">
+                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                      <tr>
+                        <td class="info-label" style="font-size:13px;color:#888888;padding:6px 0 2px;width:120px;" valign="top">Nama Lengkap</td>
+                        <td style="font-size:14px;color:#333333;padding:6px 0 2px;font-weight:bold;"><%= fullName %></td>
+                      </tr>
+                      <tr>
+                        <td class="info-label" style="font-size:13px;color:#888888;padding:6px 0 2px;width:120px;" valign="top" colspan="1">Email</td>
+                        <td style="font-size:14px;color:#333333;padding:6px 0 2px;font-weight:bold;"><%= email %></td>
+                      </tr>
+                      <tr>
+                        <td class="info-label" style="font-size:13px;color:#888888;padding:6px 0 2px;width:120px;" valign="top">Tanggal Daftar</td>
+                        <td style="font-size:14px;color:#333333;padding:6px 0 2px;font-weight:bold;"><%= createdAt %></td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- CTA BUTTON -->
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="padding:28px 0 20px;">
+                <tr>
+                  <td class="button-wrapper" align="center" valign="middle" style="padding:10px 0;">
+                    <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center">
+                      <tr>
+                        <td align="center" valign="middle" style="border-radius:6px;background-color:#2e7d32;">
+                          <!-- conditional comment yang cuma dibaca Microsoft Outlook -->
+                          <!--[if mso]> 
+                          <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="<%= activationLink %>" style="height:48px;v-text-anchor:middle;width:240px;" arcsize="12%" strokecolor="#2e7d32" fillcolor="#2e7d32">
+                          <w:anchorlock/>
+                          <center style="color:#ffffff;font-size:15px;font-weight:bold;font-family:Arial, sans-serif;">
+                          Aktifkan Akun
+                          </center>
+                          </v:roundrect>
+                          <![endif]-->
+                          <!--[if !mso]>-->
+                          <a href="<%= activationLink %>" target="_blank" style="display:inline-block;padding:14px 36px;font-size:15px;font-weight:bold;font-family:Arial,'Helvetica Neue',Helvetica,sans-serif;color:#ffffff !important;text-decoration:none !important;border-radius:6px;background-color:#2e7d32;border:1px solid #2e7d32;mso-hide:all;">Aktifkan Akun</a>
+                          <!--<![endif]-->
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- ADDITIONAL TEXT -->
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td style="font-size:14px;line-height:1.6;color:#666666;padding-bottom:6px;">
+                    Jika Anda memiliki pertanyaan, jangan ragu untuk membalas email ini atau menghubungi tim dukungan kami.
+                  </td>
+                </tr>
+                <tr>
+                  <td style="font-size:14px;line-height:1.6;color:#666666;">
+                    Salam hangat, <br />
+                    <strong style="color:#2e7d32;">Tim ACARA</strong>
+                  </td>
+                </tr>
+              </table>
+
+            </td>
+          </tr>
+
+          <!-- DIVIDER -->
+          <tr>
+            <td style="padding:0 30px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td style="border-top:1px solid #e8e8e8;font-size:1px;line-height:1px;">&nbsp;</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- FOOTER -->
+          <tr>
+            <td align="center" valign="top" style="padding:20px 30px 28px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td class="footer-text" align="center" style="font-size:12px;line-height:1.5;color:#999999;">
+                    &copy; 2024 ACARA Event Management System. Semua Hak Dilindungi.
+                  </td>
+                </tr>
+                <tr>
+                  <td align="center" style="font-size:12px;line-height:1.5;color:#999999;padding-top:4px;">
+                    Jika Anda tidak mendaftar akun ini, abaikan email ini.
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+        </table>
+        <!--[if mso]>
+        </td></tr></table>
+        <![endif]-->
+      </td>
+    </tr>
+  </table>
+</body>
 </html>
