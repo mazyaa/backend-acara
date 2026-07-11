@@ -9,7 +9,7 @@ const doc = {
   },
   servers: [
     {
-      url: "http://localhost:3000/api",
+      url: "http://localhost:5000/api",
       description: "Development server",
     },
     {
@@ -54,9 +54,11 @@ const doc = {
         location: {
           region: "region id",
           coordinates: [0, 0],
+          address: "malingping street, city, country",
         },
         isOnline: false,
         isFeatured: false,
+        isPublish: false,
       },
       RemoveMediaRequest: {
         fileUrl: "",

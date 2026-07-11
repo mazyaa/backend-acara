@@ -3,7 +3,7 @@ import * as Yup from "yup";
 
 const Schema = mongoose.Schema;
 
-export const eventDAO = Yup.object({
+export const eventDAO = Yup.object({ 
     name: Yup.string().required(),
     startDate: Yup.string().required(),
     endDate: Yup.string().required(),
@@ -17,7 +17,11 @@ export const eventDAO = Yup.object({
     createdBy: Yup.string().required(),
     createdAt: Yup.string(),
     updatedAt: Yup.string(),
-    location: Yup.object().required(),
+    location: Yup.object().shape({
+        region: Yup.string(),
+        coordinates: Yup.array(),
+        address: Yup.string(),
+    }).required(),
 });
 
 export type TEvent = Yup.InferType<typeof eventDAO>; // use infertype to get type from yup schema
@@ -85,6 +89,9 @@ const EventSchema = new Schema<IEvent>({
             coordinates: {
                 type: [Schema.Types.Number], // [longitude, latitude]
                 default: [0, 0],
+            },
+            address: {
+                type: Schema.Types.String,
             }
         }
     }
@@ -92,7 +99,7 @@ const EventSchema = new Schema<IEvent>({
     timestamps: true
 });
 
-EventSchema.pre("save", function (){
+EventSchema.pre("save", function (){ // pre-save hook to generate slug from name if not provided
     if (!this.slug) {
         const slug = this.name.split(" ").join("-").toLowerCase();
         this.slug = `${slug}`;

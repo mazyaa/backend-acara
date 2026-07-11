@@ -30,10 +30,7 @@ export async function findAll(req: IReqUser, res: Response) {
 
     if (search) {
       Object.assign(query, {
-        ...query,
-        $text: {
-          $search: search,
-        },
+        name: { $regex: search, $options: "i" },
       });
     }
 
