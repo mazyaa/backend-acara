@@ -3,6 +3,8 @@ import * as Yup from "yup";
 
 const Schema = mongoose.Schema;
 
+export const EVENT_MODEL_NAME = "Event";
+
 export const eventDAO = Yup.object({ 
     name: Yup.string().required(),
     startDate: Yup.string().required(),
@@ -106,4 +108,4 @@ EventSchema.pre("save", function (){ // pre-save hook to generate slug from name
     }
 }); 
 
-export const EventModel = mongoose.model("Event", EventSchema);
+export const EventModel = mongoose.model(EVENT_MODEL_NAME, EventSchema);
