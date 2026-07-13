@@ -26,10 +26,10 @@ export const eventDAO = Yup.object({
     }).required(),
 });
 
-export type TEvent = Yup.InferType<typeof eventDAO>; // use infertype to get type from yup schema
+export type TypeEvent = Yup.InferType<typeof eventDAO>; // use infertype to get type from yup schema
 
 // change category to ObjectId for foreign key reference from category collection
-export interface IEvent extends Omit<TEvent, "category" | "createdBy"> {
+export interface IEvent extends Omit<TypeEvent, "category" | "createdBy"> {
     category: ObjectId;
     createdBy: ObjectId;
 }

@@ -6,9 +6,11 @@ import { FilterQuery, isValidObjectId } from "mongoose";
 
 export async function create(req: IReqUser, res: Response) {
   try {
-    await ticketDAO.validate(req.body, { abortEarly: false }); // use abortEarly false to get all error message from yup validation
+    const payload = req.body as TypeTicket;
 
-    const result = await TicketModel.create(req.body as TypeTicket);
+    await ticketDAO.validate(payload, { abortEarly: false }); // use abortEarly false to get all error message from yup validation
+
+    const result = await TicketModel.create(payload);
 
     response.success(res, result, "Successfully created a ticket!");
   } catch (error) {
@@ -73,6 +75,8 @@ export async function update(req: IReqUser, res: Response) {
     const result = await TicketModel.findByIdAndUpdate(id, payload, {
       new: true, // use new true to return the updated document instead of the original document
     });
+
+    response.success(res, result, "Successfully updated a ticktet");
   } catch (error) {
     response.error(res, error, "Failed to update a ticket");
   }
@@ -84,6 +88,8 @@ export async function remove(req: IReqUser, res: Response) {
     const result = await TicketModel.findByIdAndDelete(id, {
       new: true, // use new true to return the deleted document instead of the original document
     });
+
+    response.success(res, result, "Successfully deleted a ticket");
   } catch (error) {
     response.error(res, error, "Failed to delete a ticket");
   }

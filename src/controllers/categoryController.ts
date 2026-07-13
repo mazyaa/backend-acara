@@ -1,14 +1,17 @@
 import { IReqUser, IPaginationQuery } from "../utils/interfaces";
 import { Response } from "express";
-import CategoryModel, { categoryDAO } from "../models/categoryModel";
+import CategoryModel, { categoryDAO, TypeCategory } from "../models/categoryModel";
 import * as response from "../utils/response";
 
 export async function create(req: IReqUser, res: Response) {
   try {
-    await categoryDAO.validate(req.body);
-    const result = await CategoryModel.create(req.body);
+    const payload = req.body as TypeCategory;
 
-    response.success(res, result, " Success create a category");
+    await categoryDAO.validate(payload, { abortEarly: false }); // use abortEarly false to get all error message from yup validation
+
+    const result = await CategoryModel.create(payload);
+
+    response.success(res, result, " Successfully create a category!");
   } catch (error) {
     response.error(res, error, "failed create category");
   }
@@ -66,8 +69,9 @@ export async function findOne(req: IReqUser, res: Response) {
 export async function update(req: IReqUser, res: Response) {
   try {
     const { id } = req.params;
+    const payload = req.body as Partial<TypeCategory>;
 
-    const result = await CategoryModel.findByIdAndUpdate(id, req.body, {
+    const result = await CategoryModel.findByIdAndUpdate(id, payload, {
       new: true,
     });
     response.success(res, result, "Success update a category");

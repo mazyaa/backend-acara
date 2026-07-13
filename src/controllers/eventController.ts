@@ -1,12 +1,12 @@
 import { Response } from "express";
 import { IPaginationQuery, IReqUser } from "../utils/interfaces";
-import { eventDAO, EventModel, TEvent } from "../models/eventModel";
+import { eventDAO, EventModel, TypeEvent } from "../models/eventModel";
 import * as response from "../utils/response";
 import { FilterQuery } from "mongoose";
 
 export async function create(req: IReqUser, res: Response) {
   try {
-    const payload = { ...req.body, createdBy: req.user?.id } as TEvent; // get all payload from body and add createdBy from user id
+    const payload = { ...req.body, createdBy: req.user?.id } as TypeEvent; // get all payload from body and add createdBy from user id
 
     await eventDAO.validate(payload, { abortEarly: false }); // validate payload with yup
 
@@ -26,7 +26,7 @@ export async function findAll(req: IReqUser, res: Response) {
   } = req.query as unknown as IPaginationQuery;
 
   try {
-    const query: FilterQuery<TEvent> = {};
+    const query: FilterQuery<TypeEvent> = {};
 
     if (search) {
       Object.assign(query, {
@@ -72,8 +72,9 @@ export async function findOne(req: IReqUser, res: Response) {
 export async function update(req: IReqUser, res: Response) {
   try {
     const { id } = req.params;
+    const payload = req.body as Partial<TypeEvent>;
 
-    const result = await EventModel.findByIdAndUpdate(id, req.body, {
+    const result = await EventModel.findByIdAndUpdate(id, payload, {
       new: true,
     });
 

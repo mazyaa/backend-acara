@@ -34,7 +34,7 @@ async function init () {
         
         
         app.listen(PORT, () => {
-            console.log(`Server is running on http://localhost:${PORT}`);
+            console.log(`Server is running on http://localhost:${PORT}/api`);
             console.log(`API documentation available at http://localhost:${PORT}/api-docs`);
         });
     } catch (error) {

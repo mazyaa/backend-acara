@@ -10,9 +10,9 @@ export const categoryDAO = Yup.object({
 }); // category DAO is a data access object
 
 // set category type from categoryDAO
-export type Category = Yup.InferType<typeof categoryDAO>;
+export type TypeCategory = Yup.InferType<typeof categoryDAO>;
 
-const CategorySchema = new Schema<Category>(
+const CategorySchema = new Schema<TypeCategory>(
   {
     name: {
       type: Schema.Types.String,
