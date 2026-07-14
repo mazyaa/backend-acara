@@ -2,7 +2,7 @@ import { Response } from "express";
 import { IPaginationQuery, IReqUser } from "../utils/interfaces";
 import { eventDAO, EventModel, TypeEvent } from "../models/eventModel";
 import * as response from "../utils/response";
-import { FilterQuery } from "mongoose";
+import { FilterQuery, isValidObjectId } from "mongoose";
 
 export async function create(req: IReqUser, res: Response) {
   try {
@@ -50,7 +50,7 @@ export async function findAll(req: IReqUser, res: Response) {
         currentPage: page,
         total: count, // total all data which match with query
       },
-      "Successfully retrieved all events"
+      "Successfully retrieved all events",
     );
   } catch (error) {
     response.error(res, error, "Failed to find All events");
@@ -61,7 +61,15 @@ export async function findOne(req: IReqUser, res: Response) {
   try {
     const { id } = req.params;
 
+    if (!isValidObjectId(id)) {
+      return response.badRequest(res, "id is not valid, please check your id!");
+    }
+
     const result = await EventModel.findById(id);
+
+    if (!result) {
+      response.notFound(res, "Event not found");
+    }
 
     response.success(res, result, "Successfully retrived an event by id");
   } catch (error) {
@@ -72,11 +80,20 @@ export async function findOne(req: IReqUser, res: Response) {
 export async function update(req: IReqUser, res: Response) {
   try {
     const { id } = req.params;
+
+    if (!isValidObjectId(id)) {
+      return response.badRequest(res, "id is not valid, please check your id!");
+    }
+
     const payload = req.body as Partial<TypeEvent>;
 
     const result = await EventModel.findByIdAndUpdate(id, payload, {
       new: true,
     });
+
+    if (!result) {
+      response.notFound(res, "Event not found");
+    }
 
     response.success(res, result, "Successfully updated an event");
   } catch (error) {
@@ -88,9 +105,17 @@ export async function remove(req: IReqUser, res: Response) {
   try {
     const { id } = req.params;
 
+    if (!isValidObjectId(id)) {
+      return response.badRequest(res, "id is not valid, please check your id!");
+    }
+
     const result = await EventModel.findByIdAndDelete(id, {
-        new: true,
+      new: true,
     });
+
+    if (!result) {
+      response.notFound(res, "Event not found");
+    }
 
     response.success(res, result, "Successfully deleted an event");
   } catch (error) {
@@ -102,9 +127,20 @@ export async function findOneBySlug(req: IReqUser, res: Response) {
   try {
     const { slug } = req.params;
 
+    if (!slug) {
+      return response.badRequest(
+        res,
+        "slug is required, please check your slug!",
+      );
+    }
+
     const result = await EventModel.findOne({
-        slug,
+      slug,
     });
+
+    if (!result) {
+      response.notFound(res, "Event not found");
+    }
 
     response.success(res, result, "Successfully retreived an event by slug");
   } catch (error) {

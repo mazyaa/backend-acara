@@ -60,7 +60,15 @@ export async function findOne(req: IReqUser, res: Response) {
   try {
     const { id } = req.params;
 
+    if (!isValidObjectId(id)) {
+      return response.badRequest(res, "id is not valid, please check your id!");
+    }
+
     const result = await TicketModel.findById(id).populate("events");
+
+    if (!result) {
+      response.notFound(res, "Ticket not found");
+    }
 
     response.success(res, result, "Successfully retrieved a ticket");
   } catch (error) {
@@ -70,11 +78,20 @@ export async function findOne(req: IReqUser, res: Response) {
 export async function update(req: IReqUser, res: Response) {
   try {
     const { id } = req.params;
+
+    if (!isValidObjectId(id)) {
+      return response.badRequest(res, "id is not valid, please check your id!");
+    }
+
     const payload: Partial<TypeTicket> = req.body;
 
     const result = await TicketModel.findByIdAndUpdate(id, payload, {
       new: true, // use new true to return the updated document instead of the original document
     });
+
+    if (!result) {
+      response.notFound(res, "Ticket not found");
+    }
 
     response.success(res, result, "Successfully updated a ticktet");
   } catch (error) {
@@ -85,9 +102,17 @@ export async function remove(req: IReqUser, res: Response) {
   try {
     const { id } = req.params;
 
+    if (!isValidObjectId(id)) {
+      return response.badRequest(res, "id is not valid, please check your id!");
+    }
+
     const result = await TicketModel.findByIdAndDelete(id, {
       new: true, // use new true to return the deleted document instead of the original document
     });
+
+    if (!result) {
+      return response.notFound(res, "Ticket not found");
+    }
 
     response.success(res, result, "Successfully deleted a ticket");
   } catch (error) {
@@ -99,10 +124,14 @@ export async function findAllByEventId(req: IReqUser, res: Response) {
     const { eventId } = req.params;
 
     if (!isValidObjectId(eventId)) {
-      return response.error(res, null, "Tickets not found!");
+      return response.badRequest(res, "id is not valid, please check your id!");
     }
 
     const result = await TicketModel.find({ events: eventId }).exec(); // find all tickets by eventId and use exec() to execute the query and return a promise
+
+    if (!result || result.length === 0) {
+      return response.notFound(res, "No tickets found for the specified eventId");
+    }
 
     response.success(
       res,

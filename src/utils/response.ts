@@ -74,6 +74,25 @@ export function error(res: Response, error: unknown, message: string) {
   })
 }
 
+export function notFound(res: Response, message: string = "Not Found") {
+  res.status(404).json({
+    meta: {
+      status: 404,
+      message,
+    },
+    data: null,
+  });
+}
+
+export function badRequest(res: Response, message: string = "Bad Request") {
+  res.status(400).json({
+    meta: {
+      status: 400,
+      message,
+    },
+    data: null,
+  });
+}
 export function unauthorized(res: Response, message: string = "Unauthorized") {
   res.status(403).json({
     meta: {

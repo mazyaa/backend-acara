@@ -57,7 +57,15 @@ export async function findOne(req: IReqUser, res: Response) {
   try {
     const { id } = req.params;
 
+    if (!isValidObjectId(id)) {
+      return response.badRequest(res, "id is not valid, please check your id!");
+    }
+
     const result = await TicketModel.findById(id);
+
+    if (!result) {
+      response.notFound(res, "Banner not found");
+    }
 
     response.success(res, result, "Successfully retrived a banner");
   } catch (error) {
@@ -67,11 +75,20 @@ export async function findOne(req: IReqUser, res: Response) {
 export async function update(req: IReqUser, res: Response) {
   try {
     const { id } = req.params;
+
+    if (!isValidObjectId(id)) {
+      return response.badRequest(res, "id is not valid, please check your id!");
+    }
+
     const payload = req.body as Partial<TypeBanner>;
 
     const result = await TicketModel.findByIdAndUpdate(id, payload, {
         new: true, // return the updated document
     });
+
+    if (!result) {
+      response.notFound(res, "Banner not found");
+    }
 
     response.success(res, result, "Successfully update a banner");
   } catch (error) {
@@ -82,9 +99,17 @@ export async function remove(req: IReqUser, res: Response) {
   try {
     const { id } = req.params;
 
+    if (!isValidObjectId(id)) {
+      return response.badRequest(res, "id is not valid, please check your id!");
+    }
+
     const result = await TicketModel.findByIdAndDelete(id, {
         new: true, // return the deleted document
     });
+
+    if (!result) {
+      response.notFound(res, "Banner not found");
+    }
 
     response.success(res, result, "Successfully remove a banner");
   } catch (error) {
