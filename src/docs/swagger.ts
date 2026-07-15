@@ -63,6 +63,18 @@ const doc = {
       RemoveMediaRequest: {
         fileUrl: "",
       },
+      CreateTicketRequest: {
+        title: "banner carousel 3",
+        image: "banner3.png",
+        isShow: true,
+      },
+      CreateBannerRequest: {
+        price: 20000,
+        name: "Ticket REGULER",
+        events: "6a52493779ae721bc35865eb",
+        description: "Ticket REGULER - course NEXT JS",
+        quantity: 200,
+      },
     },
   },
 };
