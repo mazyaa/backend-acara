@@ -19,24 +19,40 @@ export async function create(req: IReqUser, res: Response) {
 }
 
 export async function findAll(req: IReqUser, res: Response) {
-  const {
-    page = 1,
-    limit = 10,
-    search,
-  } = req.query as unknown as IPaginationQuery;
-
   try {
-    const query: FilterQuery<TypeEvent> = {};
+    const buildQuery = (filter: any) => {
+      let query: FilterQuery<TypeEvent> = {};
 
-    if (search) {
-      Object.assign(query, {
-        name: { $regex: search, $options: "i" },
-      });
+      if (filter.search) query.$text = { $search: filter.search }; // use $text for search text index in mongodb and have been set in model
+      if (filter.category) query.category = filter.category;
+      if (filter.isOnline) query.isOnline = filter.isOnline;
+      if (filter.isPublish) query.isPublish = filter.isPublish;
+      if (filter.isFeatured) query.isFeatured = filter.isFeatured;
+
+      return query;
     }
 
+    const {
+      limit = 10,
+      page = 1,
+      search,
+      category,
+      isOnline,
+      isFeatured,
+      isPublish,
+    } = req.query;
+
+    const query = buildQuery({
+      search,
+      category,
+      isOnline,
+      isFeatured,
+      isPublish,
+    });
+
     const result = await EventModel.find(query)
-      .limit(limit)
-      .skip((page - 1) * limit) // for skip data example page 2 limit 10, so skip (2-1)*10 = 10 so data is start from 11
+      .limit(+limit) // use + to convert string to number
+      .skip((+page - 1) * +limit) // for skip data example page 2 limit 10, so skip (2-1)*10 = 10 so data is start from 11
       .sort({ createdAt: -1 }) // sort by createdAt descending
       .exec();
 
@@ -46,8 +62,8 @@ export async function findAll(req: IReqUser, res: Response) {
       res,
       result,
       {
-        totalPages: Math.ceil(count / limit), // total all data / limit for get total pages
-        currentPage: page,
+        totalPages: Math.ceil(count / +limit), // total all data / limit for get total pages
+        currentPage: +page,
         total: count, // total all data which match with query
       },
       "Successfully retrieved all events",

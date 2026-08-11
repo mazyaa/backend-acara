@@ -780,7 +780,7 @@
         "description": "",
         "parameters": [
           {
-            "name": "page",
+            "name": "search",
             "in": "query",
             "schema": {
               "type": "string"
@@ -789,15 +789,45 @@
           {
             "name": "limit",
             "in": "query",
+            "default": 10,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "default": 1,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "category",
+            "in": "query",
             "schema": {
               "type": "string"
             }
           },
           {
-            "name": "search",
+            "name": "isOnline",
             "in": "query",
             "schema": {
-              "type": "string"
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "isPublish",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "isFeatured",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
             }
           }
         ],
@@ -1189,7 +1219,7 @@
           "name": "RemoveMediaRequest"
         }
       },
-      "CreateTicketRequest": {
+      "CreateBannerRequest": {
         "type": "object",
         "properties": {
           "title": {
@@ -1206,10 +1236,10 @@
           }
         },
         "xml": {
-          "name": "CreateTicketRequest"
+          "name": "CreateBannerRequest"
         }
       },
-      "CreateBannerRequest": {
+      "CreateTicketRequest": {
         "type": "object",
         "properties": {
           "price": {
@@ -1234,7 +1264,7 @@
           }
         },
         "xml": {
-          "name": "CreateBannerRequest"
+          "name": "CreateTicketRequest"
         }
       }
     }

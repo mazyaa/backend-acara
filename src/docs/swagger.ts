@@ -63,12 +63,12 @@ const doc = {
       RemoveMediaRequest: {
         fileUrl: "",
       },
-      CreateTicketRequest: {
+      CreateBannerRequest: {
         title: "banner carousel 3",
         image: "banner3.png",
         isShow: true,
       },
-      CreateBannerRequest: {
+      CreateTicketRequest: {
         price: 20000,
         name: "Ticket REGULER",
         events: "6a52493779ae721bc35865eb",

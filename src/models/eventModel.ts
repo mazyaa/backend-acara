@@ -13,7 +13,7 @@ export const eventDAO = Yup.object({
     banner: Yup.string().required(),
     isFeatured: Yup.boolean().required(),
     isOnline: Yup.boolean().required(),
-    isPublish: Yup.boolean(),
+    isPublish: Yup.boolean().required(),
     category: Yup.string().required(),
     slug: Yup.string(),
     createdBy: Yup.string().required(),
@@ -100,6 +100,8 @@ const EventSchema = new Schema<IEvent>({
 }, {
     timestamps: true
 });
+
+EventSchema.index({ name: "text", description: "text" }); // create text index for search in name and description
 
 EventSchema.pre("save", function (){ // pre-save hook to generate slug from name if not provided
     if (!this.slug) {
