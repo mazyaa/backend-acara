@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const villageSchema = new mongoose.Schema({
   id: { type: Number, index: true },
@@ -17,7 +17,7 @@ const regencySchema = new mongoose.Schema({
   districts: [districtSchema],
 }).index({ name: "text" });
 
-const provinceSchema = new mongoose.Schema(
+const provinceSchema = new Schema(
   {
     id: { type: Number, index: true },
     name: String,

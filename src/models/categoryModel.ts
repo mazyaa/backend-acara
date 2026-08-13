@@ -1,7 +1,5 @@
-import mongoose from "mongoose";
+import mongoose , { Schema } from "mongoose";
 import * as Yup from "yup";
-
-const Schema = mongoose.Schema;
 
 export const categoryDAO = Yup.object({
   name: Yup.string().required(),

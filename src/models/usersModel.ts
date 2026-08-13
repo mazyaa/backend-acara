@@ -1,8 +1,10 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import { encrypt, generateActivationCode } from "../utils/encryption";
 import { sendMail, renderMailHtml } from "../utils/mail/mail";
 import { CLIENT_HOST, EMAIL_SMTP_USER } from "../utils/env";
 import { ROLES } from "../utils/constant";
+
+export const USERS_MODEL_NAME = "Users";
 
 export interface IUser {
   fullName: string;
@@ -15,8 +17,6 @@ export interface IUser {
   activationCode: string;
   createdAt?: Date;
 }
-
-const Schema = mongoose.Schema;
 
 const UserSchema = new Schema<IUser>(
   {
@@ -104,4 +104,4 @@ UserSchema.methods.toJSON = function () {
   return userObject;
 };
 
-export const UsersModel = mongoose.model("Users", UserSchema);
+export const UsersModel = mongoose.model("USERS_MODEL_NAME", UserSchema);

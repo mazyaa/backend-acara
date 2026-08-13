@@ -1,7 +1,5 @@
-import mongoose, { ObjectId } from "mongoose";
+import mongoose, { ObjectId, Schema } from "mongoose";
 import * as Yup from "yup";
-
-const Schema = mongoose.Schema;
 
 export const EVENT_MODEL_NAME = "Event";
 
