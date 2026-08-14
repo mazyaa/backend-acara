@@ -54,6 +54,7 @@ export async function findAll(req: IReqUser, res: Response) {
       .limit(+limit) // use + to convert string to number
       .skip((+page - 1) * +limit) // for skip data example page 2 limit 10, so skip (2-1)*10 = 10 so data is start from 11
       .sort({ createdAt: -1 }) // sort by createdAt descending
+      .lean() // use lean() to return plain javascript object instead of mongoose document
       .exec();
 
     const count = await EventModel.countDocuments(query);
