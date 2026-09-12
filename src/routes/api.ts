@@ -10,6 +10,7 @@ import * as regionController from "../controllers/regionController";
 import * as eventController from "../controllers/eventController";
 import * as ticketController from "../controllers/ticketController";
 import * as bannerController from "../controllers/BannerController";
+import * as orderController from "../controllers/orderController";
 const router = express.Router();
 
 // auth routes
@@ -17,6 +18,62 @@ router.post("/auth/register", authController.register);
 router.post("/auth/activation", authController.activation);
 router.post("/auth/login", authController.login);
 router.get("/auth/me", authMiddleware, authController.me);
+
+//order routes
+router.post("/orders", [authMiddleware], orderController.create
+/*
+  #swagger.tags = ['Orders']
+  #swagger.security = [{ "bearerAuth": {} }]
+  #swagger.requestBody = {
+    required: true, 
+    schema: {
+      $ref: "#/components/schemas/CreateOrderRequest"
+    }
+  }
+  */
+);
+router.get("/orders", [authMiddleware, aclMiddleware([ROLES.ADMIN])], orderController.findAll
+/*
+  #swagger.tags = ['Orders']
+  #swagger.security = [{ "bearerAuth": {} }]
+  */
+);
+router.get("/orders/:orderId", [authMiddleware, aclMiddleware([ROLES.ADMIN])], orderController.findOne
+/*
+  #swagger.tags = ['Orders']
+  #swagger.security = [{ "bearerAuth": {} }]
+  */
+);
+router.delete("orders/orderId", [authMiddleware, aclMiddleware([ROLES.ADMIN])], orderController.remove
+/*
+  #swagger.tags = ['Orders']
+  #swagger.security = [{ "bearerAuth": {} }]
+  */
+);
+router.put("/orders/:orderId/completed", [authMiddleware, aclMiddleware([ROLES.ADMIN])], orderController.completed
+/*
+  #swagger.tags = ['Orders']
+  #swagger.security = [{ "bearerAuth": {} }]
+  */
+);
+router.put("/orders/:orderId/pending", [authMiddleware, aclMiddleware([ROLES.ADMIN])], orderController.pending
+/*
+  #swagger.tags = ['Orders']
+  #swagger.security = [{ "bearerAuth": {} }]
+  */
+);
+router.put("/orders/:orderId/cancelled", [authMiddleware, aclMiddleware([ROLES.ADMIN])], orderController.cancelled
+/*
+  #swagger.tags = ['Orders']
+  #swagger.security = [{ "bearerAuth": {} }]
+  */
+);
+router.get("/orders-history", [authMiddleware], orderController.findAllByMember
+/*
+  #swagger.tags = ['Orders']
+  #swagger.security = [{ "bearerAuth": {} }]
+  */
+);
 
 //tickets routes
 router.post("/tickets", [authMiddleware, aclMiddleware([ROLES.ADMIN])], ticketController.create

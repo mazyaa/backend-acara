@@ -162,10 +162,25 @@ export async function pending(req: IReqUser, res: Response) {
     response.error(res, error, "Failed to pending an order");
   }
 }
-
 export async function cancelled(req: IReqUser, res: Response) {
   try {
   } catch (error) {
     response.error(res, error, "Failed to cancelled an order");
+  }
+}
+
+export async function remove(req: IReqUser, res: Response) {
+  try {
+    const { orderId } = req.params;
+
+    const result = await OrderModel.findOneAndDelete({orderId}, { new: true });
+
+    if (!result) {
+      return response.notFound(res, "Order not found!");
+    }
+
+    response.success(res, result, "Order deleted successfully!");
+  } catch (error) {
+    response.error(res, error, "Failed to delete order");
   }
 }

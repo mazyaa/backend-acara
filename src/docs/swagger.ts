@@ -75,6 +75,10 @@ const doc = {
         description: "Ticket REGULER - course NEXT JS",
         quantity: 200,
       },
+      CreateOrderRequest: {
+        ticket: "ticket ObjectId",
+        quantity: 2,
+      },
     },
   },
 };
