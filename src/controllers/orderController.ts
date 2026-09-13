@@ -158,12 +158,66 @@ export async function completed(req: IReqUser, res: Response) {
 
 export async function pending(req: IReqUser, res: Response) {
   try {
+    const { orderId } = req.params;
+    const userId = req.user?.id;
+
+    const order = await OrderModel.findOne({
+      orderId,
+      createdBy: userId,
+    });
+
+    if (!order) {
+      return response.notFound(res, "Order not found!");
+    }
+
+    if (order.status === OrderStatus.COMPLETED) {
+      return response.badRequest(res, "Order is already completed!");
+    }
+
+    if (order.status === OrderStatus.PENDING) {
+      return response.badRequest(res, "Order is already pending!");
+    }
+
+    const result = await OrderModel.findOneAndUpdate(
+      { orderId, createdBy: userId }, // update order by orderId and userId
+      { status: OrderStatus.PENDING }, // update status to pending
+      { new: true }, // return the updated document
+    );
+
+    return response.success(res, result, "Order pending successfully!");
   } catch (error) {
     response.error(res, error, "Failed to pending an order");
   }
 }
 export async function cancelled(req: IReqUser, res: Response) {
   try {
+    const { orderId } = req.params;
+    const userId = req.user?.id;
+
+    const order = await OrderModel.findOne({
+      orderId,
+      createdBy: userId,
+    });
+
+    if (!order) {
+      return response.notFound(res, "Order not found!");
+    }
+
+    if (order.status === OrderStatus.COMPLETED) {
+      return response.badRequest(res, "Order is already completed!");
+    }
+
+    if (order.status === OrderStatus.CANCELLED) {
+      return response.badRequest(res, "Order is already cancelled!");
+    }
+
+    const result = await OrderModel.findOneAndUpdate(
+      { orderId, createdBy: userId }, // update order by orderId and userId
+      { status: OrderStatus.CANCELLED }, // update status to cancelled
+      { new: true }, // return the updated document
+    );
+
+    return response.success(res, result, "Order cancelled successfully!");
   } catch (error) {
     response.error(res, error, "Failed to cancelled an order");
   }
@@ -173,7 +227,10 @@ export async function remove(req: IReqUser, res: Response) {
   try {
     const { orderId } = req.params;
 
-    const result = await OrderModel.findOneAndDelete({orderId}, { new: true });
+    const result = await OrderModel.findOneAndDelete(
+      { orderId },
+      { new: true },
+    );
 
     if (!result) {
       return response.notFound(res, "Order not found!");
