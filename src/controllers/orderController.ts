@@ -102,7 +102,47 @@ export async function findOne(req: IReqUser, res: Response) {
     response.error(res, error, "Failed to retieve order");
   }
 }
-export async function findAllByMember(req: IReqUser, res: Response) {}
+export async function findAllByMember(req: IReqUser, res: Response) {
+  try {
+    const userId = req.user?.id; // get user id from middleware
+
+    const buildQuery = (filter: any) => {
+      let query: FilterQuery<TypeOrder> = {
+        createdBy: userId, // filter by user id
+      };
+
+      if (filter.search) query.$text = { $search: filter.search };
+
+      return query;
+    };
+
+    const { limit = 10, page = 1, search } = req.params;
+
+    const query = buildQuery({ search });
+
+    const result = await OrderModel.find(query)
+      .limit(+limit)
+      .skip((+page - 1) * +limit)
+      .sort({ createdAt: -1 })
+      .lean() // user lean() to return plain javascript object instead of mongoose document
+      .exec();
+
+    const count = await OrderModel.countDocuments(query);
+
+    response.pagination(
+      res,
+      result,
+      {
+        totalPages: Math.ceil(count / +limit),
+        currentPage: +page,
+        total: count,
+      },
+      "Successfully retrieved all orders by member",
+    );
+  } catch (error) {
+    response.error(res, error, "Failed to retrieve all orders by member");
+  }
+}
 
 export async function completed(req: IReqUser, res: Response) {
   try {
