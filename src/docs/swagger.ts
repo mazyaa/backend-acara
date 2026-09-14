@@ -52,7 +52,7 @@ const doc = {
         startDate: "yyyy-mm-dd hh:mm:ss",
         endDate: "yyyy-mm-dd hh:mm:ss",
         location: {
-          region: "region id",
+          region: 3277,
           coordinates: [0, 0],
           address: "malingping street, city, country",
         },
@@ -76,6 +76,7 @@ const doc = {
         quantity: 200,
       },
       CreateOrderRequest: {
+        events: "event ObjectId",
         ticket: "ticket ObjectId",
         quantity: 2,
       },

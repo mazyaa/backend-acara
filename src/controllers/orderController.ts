@@ -199,11 +199,9 @@ export async function completed(req: IReqUser, res: Response) {
 export async function pending(req: IReqUser, res: Response) {
   try {
     const { orderId } = req.params;
-    const userId = req.user?.id;
 
     const order = await OrderModel.findOne({
       orderId,
-      createdBy: userId,
     });
 
     if (!order) {
@@ -219,7 +217,7 @@ export async function pending(req: IReqUser, res: Response) {
     }
 
     const result = await OrderModel.findOneAndUpdate(
-      { orderId, createdBy: userId }, // update order by orderId and userId
+      { orderId },
       { status: OrderStatus.PENDING }, // update status to pending
       { new: true }, // return the updated document
     );
@@ -232,11 +230,9 @@ export async function pending(req: IReqUser, res: Response) {
 export async function cancelled(req: IReqUser, res: Response) {
   try {
     const { orderId } = req.params;
-    const userId = req.user?.id;
 
     const order = await OrderModel.findOne({
       orderId,
-      createdBy: userId,
     });
 
     if (!order) {
@@ -252,7 +248,7 @@ export async function cancelled(req: IReqUser, res: Response) {
     }
 
     const result = await OrderModel.findOneAndUpdate(
-      { orderId, createdBy: userId }, // update order by orderId and userId
+      { orderId },
       { status: OrderStatus.CANCELLED }, // update status to cancelled
       { new: true }, // return the updated document
     );

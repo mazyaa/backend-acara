@@ -20,7 +20,7 @@ router.post("/auth/login", authController.login);
 router.get("/auth/me", authMiddleware, authController.me);
 
 //order routes
-router.post("/orders", [authMiddleware], orderController.create
+router.post("/orders", [authMiddleware, aclMiddleware([ROLES.MEMBER])], orderController.create
 /*
   #swagger.tags = ['Orders']
   #swagger.security = [{ "bearerAuth": {} }]
@@ -38,19 +38,19 @@ router.get("/orders", [authMiddleware, aclMiddleware([ROLES.ADMIN])], orderContr
   #swagger.security = [{ "bearerAuth": {} }]
   */
 );
-router.get("/orders/:orderId", [authMiddleware, aclMiddleware([ROLES.ADMIN])], orderController.findOne
+router.get("/orders/:orderId", [authMiddleware, aclMiddleware([ROLES.ADMIN, ROLES.MEMBER])], orderController.findOne
 /*
   #swagger.tags = ['Orders']
   #swagger.security = [{ "bearerAuth": {} }]
   */
 );
-router.delete("orders/orderId", [authMiddleware, aclMiddleware([ROLES.ADMIN])], orderController.remove
+router.delete("/orders/:orderId", [authMiddleware, aclMiddleware([ROLES.ADMIN])], orderController.remove
 /*
   #swagger.tags = ['Orders']
   #swagger.security = [{ "bearerAuth": {} }]
   */
 );
-router.put("/orders/:orderId/completed", [authMiddleware, aclMiddleware([ROLES.ADMIN])], orderController.completed
+router.put("/orders/:orderId/completed", [authMiddleware, aclMiddleware([ROLES.MEMBER])], orderController.completed
 /*
   #swagger.tags = ['Orders']
   #swagger.security = [{ "bearerAuth": {} }]
@@ -68,7 +68,7 @@ router.put("/orders/:orderId/cancelled", [authMiddleware, aclMiddleware([ROLES.A
   #swagger.security = [{ "bearerAuth": {} }]
   */
 );
-router.get("/orders-history", [authMiddleware], orderController.findAllByMember
+router.get("/orders-history", [authMiddleware, aclMiddleware([ROLES.MEMBER])], orderController.findAllByMember
 /*
   #swagger.tags = ['Orders']
   #swagger.security = [{ "bearerAuth": {} }]

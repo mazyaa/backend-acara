@@ -1467,6 +1467,10 @@
       "CreateOrderRequest": {
         "type": "object",
         "properties": {
+          "events": {
+            "type": "string",
+            "example": "event ObjectId"
+          },
           "ticket": {
             "type": "string",
             "example": "ticket ObjectId"
