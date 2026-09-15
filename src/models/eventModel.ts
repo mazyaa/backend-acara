@@ -3,7 +3,7 @@ import * as Yup from "yup";
 
 export const EVENT_MODEL_NAME = "Event";
 
-export const eventDAO = Yup.object({ 
+export const eventDTO = Yup.object({ 
     name: Yup.string().required(),
     startDate: Yup.string().required(),
     endDate: Yup.string().required(),
@@ -24,7 +24,7 @@ export const eventDAO = Yup.object({
     }).required(),
 });
 
-export type TypeEvent = Yup.InferType<typeof eventDAO>; // use infertype to get type from yup schema
+export type TypeEvent = Yup.InferType<typeof eventDTO>; // use infertype to get type from yup schema
 
 // change category to ObjectId for foreign key reference from category collection
 export interface IEvent extends Omit<TypeEvent, "category" | "createdBy"> {

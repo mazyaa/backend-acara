@@ -1,14 +1,14 @@
 import mongoose , { Schema } from "mongoose";
 import * as Yup from "yup";
 
-export const categoryDAO = Yup.object({
+export const categoryDTO = Yup.object({
   name: Yup.string().required(),
   description: Yup.string().required(),
   icon: Yup.string().required(),
-}); // category DAO is a data access object
+}); // category DTO is a data transfer object
 
-// set category type from categoryDAO
-export type TypeCategory = Yup.InferType<typeof categoryDAO>;
+// set category type from categoryDTO
+export type TypeCategory = Yup.InferType<typeof categoryDTO>;
 
 const CategorySchema = new Schema<TypeCategory>(
   {

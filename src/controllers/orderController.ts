@@ -2,7 +2,7 @@ import { Response } from "express";
 import { IReqUser } from "../utils/interfaces";
 import * as response from "../utils/response";
 import OrderModel, {
-  orderDAO,
+  orderDTO,
   OrderStatus,
   TypeOrder,
   TypeVoucher,
@@ -19,7 +19,7 @@ export async function create(req: IReqUser, res: Response) {
       createdBy: userId,
     } as TypeOrder;
 
-    await orderDAO.validate(payload); // validate payload using yup schema
+    await orderDTO.validate(payload); // validate payload using yup schema
 
     const getTicket = await TicketModel.findById(payload.ticket); // get ticket from database
 

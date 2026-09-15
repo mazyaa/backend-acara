@@ -1,13 +1,13 @@
 import { Response } from "express";
 import { IPaginationQuery, IReqUser } from "../utils/interfaces";
-import TicketModel, { bannerDAO, TypeBanner } from "../models/bannerModel";
+import TicketModel, { bannerDTO, TypeBanner } from "../models/bannerModel";
 import * as response from "../utils/response";
 import { FilterQuery, isValidObjectId } from "mongoose";
 export async function create(req: IReqUser, res: Response) {
   try {
     const payload = req.body as TypeBanner;
 
-    await bannerDAO.validate(payload, { abortEarly: false }); // use abortEarly false to get all error message from yup validation
+    await bannerDTO.validate(payload, { abortEarly: false }); // use abortEarly false to get all error message from yup validation
 
     const result = await TicketModel.create(payload);
 

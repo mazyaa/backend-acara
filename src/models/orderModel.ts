@@ -8,14 +8,14 @@ import createLink, { Payment, TypeResponseMidtrans } from "../utils/payment";
 
 export const ORDER_MODEL_NAME = "Order";
 
-export const orderDAO = Yup.object({
+export const orderDTO = Yup.object({
   createdBy: Yup.string().required(),
   events: Yup.string().required(),
   ticket: Yup.string().required(),
   quantity: Yup.number().required(),
 });
 
-export type TypeOrder = Yup.InferType<typeof orderDAO>; // assign type from yup schema
+export type TypeOrder = Yup.InferType<typeof orderDTO>; // assign type from yup schema
 
 export enum OrderStatus {
   PENDING = "pending",

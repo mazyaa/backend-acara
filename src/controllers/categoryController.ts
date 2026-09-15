@@ -1,7 +1,7 @@
 import { IReqUser, IPaginationQuery } from "../utils/interfaces";
 import { Response } from "express";
 import CategoryModel, {
-  categoryDAO,
+  categoryDTO,
   TypeCategory,
 } from "../models/categoryModel";
 import * as response from "../utils/response";
@@ -11,7 +11,7 @@ export async function create(req: IReqUser, res: Response) {
   try {
     const payload = req.body as TypeCategory;
 
-    await categoryDAO.validate(payload, { abortEarly: false }); // use abortEarly false to get all error message from yup validation
+    await categoryDTO.validate(payload, { abortEarly: false }); // use abortEarly false to get all error message from yup validation
 
     const result = await CategoryModel.create(payload);
 

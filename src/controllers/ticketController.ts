@@ -1,6 +1,6 @@
 import { Response } from "express";
 import { IPaginationQuery, IReqUser } from "../utils/interfaces";
-import TicketModel, { ticketDAO, TypeTicket } from "../models/ticketModel";
+import TicketModel, { ticketDTO, TypeTicket } from "../models/ticketModel";
 import * as response from "../utils/response";
 import { FilterQuery, isValidObjectId } from "mongoose";
 
@@ -8,7 +8,7 @@ export async function create(req: IReqUser, res: Response) {
   try {
     const payload = req.body as TypeTicket;
 
-    await ticketDAO.validate(payload, { abortEarly: false }); // use abortEarly false to get all error message from yup validation
+    await ticketDTO.validate(payload, { abortEarly: false }); // use abortEarly false to get all error message from yup validation
 
     const result = await TicketModel.create(payload);
 
