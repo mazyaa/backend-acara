@@ -80,6 +80,15 @@ const doc = {
         ticket: "ticket ObjectId",
         quantity: 2,
       },
+      UpdateProfileRequest: {
+        fullName: "John Doe",
+        profilePicture: "profile.jpg",
+      },
+      UpdatePasswordRequest: {
+        oldPassword: "oldpassword123",
+        password: "newpassword123",
+        confirmPassword: "newpassword123"
+      },
     },
   },
 };

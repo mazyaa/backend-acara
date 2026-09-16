@@ -113,9 +113,75 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerAuth": {}
           }
         ]
+      }
+    },
+    "/auth/update-profile": {
+      "put": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": {}
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProfileRequest"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProfileRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/update-password": {
+      "put": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": {}
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePasswordRequest"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePasswordRequest"
+              }
+            }
+          }
+        }
       }
     },
     "/orders": {
@@ -193,14 +259,22 @@
             "bearerAuth": {}
           }
         ]
-      }
-    },
-    "orders/orderId": {
+      },
       "delete": {
         "tags": [
           "Orders"
         ],
         "description": "",
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "default": {
             "description": ""
@@ -1368,8 +1442,8 @@
             "type": "object",
             "properties": {
               "region": {
-                "type": "string",
-                "example": "region id"
+                "type": "number",
+                "example": 3277
               },
               "coordinates": {
                 "type": "array",
@@ -1482,6 +1556,42 @@
         },
         "xml": {
           "name": "CreateOrderRequest"
+        }
+      },
+      "UpdateProfileRequest": {
+        "type": "object",
+        "properties": {
+          "fullName": {
+            "type": "string",
+            "example": "John Doe"
+          },
+          "profilePicture": {
+            "type": "string",
+            "example": "profile.jpg"
+          }
+        },
+        "xml": {
+          "name": "UpdateProfileRequest"
+        }
+      },
+      "UpdatePasswordRequest": {
+        "type": "object",
+        "properties": {
+          "oldPassword": {
+            "type": "string",
+            "example": "oldpassword123"
+          },
+          "password": {
+            "type": "string",
+            "example": "newpassword123"
+          },
+          "confirmPassword": {
+            "type": "string",
+            "example": "newpassword123"
+          }
+        },
+        "xml": {
+          "name": "UpdatePasswordRequest"
         }
       }
     }
