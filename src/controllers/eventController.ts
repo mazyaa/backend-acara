@@ -2,6 +2,7 @@ import { Response } from "express";
 import { IReqUser } from "../utils/interfaces";
 import { eventDTO, EventModel, TypeEvent } from "../models/eventModel";
 import * as response from "../utils/response";
+import * as uploader from "../utils/uploader";
 import { FilterQuery, isValidObjectId } from "mongoose";
 
 export async function create(req: IReqUser, res: Response) {
@@ -30,7 +31,7 @@ export async function findAll(req: IReqUser, res: Response) {
       if (filter.isFeatured) query.isFeatured = filter.isFeatured;
 
       return query;
-    }
+    };
 
     const {
       limit = 10,
@@ -85,7 +86,7 @@ export async function findOne(req: IReqUser, res: Response) {
     const result = await EventModel.findById(id);
 
     if (!result) {
-      response.notFound(res, "Event not found");
+      return response.notFound(res, "Event not found");
     }
 
     response.success(res, result, "Successfully retrived an event by id");
@@ -109,7 +110,7 @@ export async function update(req: IReqUser, res: Response) {
     });
 
     if (!result) {
-      response.notFound(res, "Event not found");
+      return response.notFound(res, "Event not found");
     }
 
     response.success(res, result, "Successfully updated an event");
@@ -126,13 +127,17 @@ export async function remove(req: IReqUser, res: Response) {
       return response.badRequest(res, "id is not valid, please check your id!");
     }
 
+    const event = await EventModel.findById(id);
+
+    if (!event) {
+      return response.notFound(res, "Event not found");
+    }
+
+    await uploader.remove(event.banner); // remove banner from cloudinary
+
     const result = await EventModel.findByIdAndDelete(id, {
       new: true,
     });
-
-    if (!result) {
-      response.notFound(res, "Event not found");
-    }
 
     response.success(res, result, "Successfully deleted an event");
   } catch (error) {
@@ -156,7 +161,7 @@ export async function findOneBySlug(req: IReqUser, res: Response) {
     });
 
     if (!result) {
-      response.notFound(res, "Event not found");
+      return response.notFound(res, "Event not found");
     }
 
     response.success(res, result, "Successfully retreived an event by slug");
