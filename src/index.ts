@@ -6,7 +6,7 @@ import { connectToDatabase} from './utils/database';
 import docs from './docs/routes';
 import cors from 'cors';
 import morgan from 'morgan';
-
+import { serverRouter, serverError } from './middlewares/error.middleware';
 
 async function init () {
     try {
@@ -34,6 +34,9 @@ async function init () {
         //docs routes
         docs(app);
         app.use(bodyParser.json()); // middleware to parse JSON bodies with body-parser
+
+        app.use(serverRouter()); // middleware to handle 404 errors
+        app.use(serverError()); // middleware to handle server errors
         
         app.listen(PORT, () => {
             console.log(`Server is running on http://localhost:${PORT}/api`);
